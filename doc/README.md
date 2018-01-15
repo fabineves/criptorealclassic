@@ -1,4 +1,4 @@
-Criptoreal Core 0.14.2
+Criptoreal Core 0.14.2 - Tradução
 =====================
 
 Setup
