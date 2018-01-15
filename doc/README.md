@@ -1,80 +1,79 @@
 Criptoreal Core 0.14.2 - Tradução
 =====================
 
-Setup
+Configuração
 ---------------------
-Criptoreal Core is the original Criptoreal client and it builds the backbone of the network. However, it downloads and stores the entire history of Criptoreal transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
+Criptoreal Core é o cliente original de Criptoreal e constrói a espinha dorsal da rede. Entretanto, faz o download e armazena o histórico de todas as transações feitas em Criptoreal (que atualmente são vários GBs); dependendo da velocidade do seu computador e da sua conexão, o processo de sincronização pode ser feito em qualquer lugar levando desde algumas horas até um dia ou mais.
 
-To download Criptoreal Core, visit [criptoreal.org](https://criptoreal.org).
+Para fazer o download do Criptoreal Core, visite [criptoreal.org](https://criptoreal.org).
 
-Running
+Execução
 ---------------------
-The following are some helpful notes on how to run Criptoreal on your native platform.
+Abaixo estão algumas notas úteis para executar o Criptoreal Core na sua plataforma nativa.
 
 ### Unix
 
-Unpack the files into a directory and run:
+Extraia os arquivos em uma pasta e execute:
 
 - `bin/criptoreal-qt` (GUI) or
 - `bin/criptoreald` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run criptoreal-qt.exe.
+Extraia os arquivos para uma pasta, depois execute o arquivo criptoreal-qt.exe.
 
 ### OS X
 
-Drag Criptoreal-Core to your applications folder, and then run Criptoreal-Core.
+Arraste o arquivo Criptoreal-Core para sua pasta aplicativos, depois execute Criptoreal-Core.
 
-### Need Help?
+### Precisa de ajuda?
 
-* See the documentation at the [Criptoreal Wiki](https://criptoreal.info/)
-for help and more information.
-* Ask for help on [#criptoreal](http://webchat.freenode.net?channels=criptoreal) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=criptoreal).
-* Ask for help on the [CriptorealTalk](https://criptorealtalk.io/) forums.
+* Veja a documentação na [Criptoreal Wiki](https://criptoreal.info/)
+para ajuda e mais informações.
+* Peça ajuda no canal [#criptoreal](http://webchat.freenode.net?channels=criptoreal) no Freenode. Se você não tem um cliente de IRC use [o webchat](http://webchat.freenode.net?channels=criptoreal).
+* Peça ajuda nos fóruns [CriptorealTalk](https://criptorealtalk.io/).
 
-Building
+Construção
 ---------------------
-The following are developer notes on how to build Criptoreal on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+Abaixo estão as notas dos desenvolvedores para construir Criptoreal na sua plataforma nativa. Não são guias completos, mas incluem as notas mais importantes sobre as bibliotecas, compilação, etc.
 
-- [OS X Build Notes](build-osx.md)
-- [Unix Build Notes](build-unix.md)
-- [Windows Build Notes](build-windows.md)
-- [OpenBSD Build Notes](build-openbsd.md)
-- [Gitian Building Guide](gitian-building.md)
+- [Notas de construção para OS X](build-osx.md)
+- [Notas de construção para Unix](build-unix.md)
+- [Notas de construção para Windows](build-windows.md)
+- [Notas de construcão para OpenBSD](build-openbsd.md)
+- [Guia de construção Gitian](gitian-building.md)
 
-Development
+Desenvolvimento
 ---------------------
-The Criptoreal repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+O repositório [raiz README](/README.md) contém informação relevante no processo de desenvolvimento e testes automatizados.
 
-- [Developer Notes](developer-notes.md)
-- [Release Notes](release-notes.md)
-- [Release Process](release-process.md)
-- [Source Code Documentation (External Link)](https://dev.visucore.com/criptoreal/doxygen/)
-- [Translation Process](translation_process.md)
-- [Translation Strings Policy](translation_strings_policy.md)
+- [Notas do desenvolvedor](developer-notes.md)
+- [Notas de lançamento](release-notes.md)
+- [Processo de lançamento](release-process.md)
+- [Documentação do código fonte (link externo)](https://dev.visucore.com/criptoreal/doxygen/)
+- [Processo de tradução](translation_process.md)
+- [Política de tradução de strings](translation_strings_policy.md)
 - [Travis CI](travis-ci.md)
-- [Unauthenticated REST Interface](REST-interface.md)
-- [Shared Libraries](shared-libraries.md)
+- [Interface REST sem autenticação](REST-interface.md)
+- [Bibliotecas compartilhadas](shared-libraries.md)
 - [BIPS](bips.md)
-- [Dnsseed Policy](dnsseed-policy.md)
+- [Políticas Dnsseed](dnsseed-policy.md)
 - [Benchmarking](benchmarking.md)
 
-### Resources
-* Discuss on the [CriptorealTalk](https://criptorealtalk.io/) forums.
-* Discuss general Criptoreal development on #criptoreal-dev on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=criptoreal-dev).
+### Recursos
+* Discuta no fórum [CriptorealTalk](https://criptorealtalk.io/).
+* Discussão geral sobre o desenvolvimento de Criptoreal no canal #criptoreal-dev no Freenode. Se você não tem um cliente de IRC use o webchat [aqui](http://webchat.freenode.net/?channels=criptoreal-dev).
 
-### Miscellaneous
-- [Assets Attribution](assets-attribution.md)
-- [Files](files.md)
+### Diversos
+- [Atribuição de ativos](assets-attribution.md)
+- [Arquivos](files.md)
 - [Fuzz-testing](fuzzing.md)
-- [Reduce Traffic](reduce-traffic.md)
-- [Tor Support](tor.md)
-- [Init Scripts (systemd/upstart/openrc)](init.md)
+- [Reduzir tráfego](reduce-traffic.md)
+- [Suporte Tor](tor.md)
+- [Scripts Init (systemd/upstart/openrc)](init.md)
 - [ZMQ](zmq.md)
 
-License
+Licença
 ---------------------
-Distributed under the [MIT software license](/COPYING).
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes
-cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.
+Distribuido sob [a licença de software MIT](/COPYING).
+Este produto inclui software desenvolvido pela OpenSSL Project para uso no [OpenSSL Toolkit](https://www.openssl.org/). Este produto inclui software criptografado escrito por Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), e software UPnP escrito por Thomas Bernard.
