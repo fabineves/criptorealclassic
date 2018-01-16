@@ -1,59 +1,59 @@
-Unauthenticated REST Interface
+Interface REST sem autenticação
 ==============================
 
-The REST API can be enabled with the `-rest` option.
+A API REST pode ser ativada com a opção `-rest`.
 
-The interface runs on the same port as the JSON-RPC interface, by default port 8332 for mainnet and port 18332 for testnet.
+A interface roda na mesma porta que a interface JSON-RPC, por padrão é designada a porta 8332 para mainnet e a porta 18332 para testnet.
 
-Supported API
+API Suportada
 -------------
 
-####Transactions
+####Transações
 `GET /rest/tx/<TX-HASH>.<bin|hex|json>`
 
-Given a transaction hash: returns a transaction in binary, hex-encoded binary, or JSON formats.
+Dada uma transação hash: retorna uma transação binária, binária codificada como hexadecimal, ou em JSON.
 
-For full TX query capability, one must enable the transaction index via "txindex=1" command line / configuration option.
+Para uma consulta TX, uma deve habilitar o índice da transação via "txindex=1" linha de comando / opções de configuração.
 
-####Blocks
+####Blocos
 `GET /rest/block/<BLOCK-HASH>.<bin|hex|json>`
 `GET /rest/block/notxdetails/<BLOCK-HASH>.<bin|hex|json>`
 
-Given a block hash: returns a block, in binary, hex-encoded binary or JSON formats.
+Dado um bloco hash: retorna um bloco, binário, binário sem codificação ou em JSON.
 
-The HTTP request and response are both handled entirely in-memory, thus making maximum memory usage at least 2.66MB (1 MB max block, plus hex encoding) per request.
+Tanto a chamada HTTP e a resposta são tratadas totalmente na memória, com o uso máximo de pelo menos 2.66MB (1 MB no máximo por bloco, mais a codificação hexadecimal) por pedido.
 
-With the /notxdetails/ option JSON response will only contain the transaction hash instead of the complete transaction details. The option only affects the JSON response.
+Com a opção /notxdetails/ a resposta JSON irá conter somente a transação hash ao invés de todos os detalhes da transação. Esta opção afeta somente a resposta JSON.
 
 ####Blockheaders
 `GET /rest/headers/<COUNT>/<BLOCK-HASH>.<bin|hex|json>`
 
-Given a block hash: returns <COUNT> amount of blockheaders in upward direction.
+Dado um bloco hash: retorna <COUNT> uma quantidade de cabeças de bloco em uma direção ascendente.
 
 ####Chaininfos
 `GET /rest/chaininfo.json`
 
-Returns various state info regarding block chain processing.
-Only supports JSON as output format.
-* chain : (string) current network name as defined in BIP70 (main, test, regtest)
-* blocks : (numeric) the current number of blocks processed in the server
-* headers : (numeric) the current number of headers we have validated
-* bestblockhash : (string) the hash of the currently best block
-* difficulty : (numeric) the current difficulty
-* verificationprogress : (numeric) estimate of verification progress [0..1]
-* chainwork : (string) total amount of work in active chain, in hexadecimal
-* pruned : (boolean) if the blocks are subject to pruning
-* pruneheight : (numeric) heighest block available
-* softforks : (array) status of softforks in progress
+Retorna várias informações do estado do processamento da cadeia de blocos.
+Suporta somente JSON como formato de saída.
+* chain : (string) nome atual da rede como definido em BIP70 (main, test, regtest)
+* blocks : (numerico) número atual de blocos processados no servidor
+* headers : (numerico) número atual do cabeçalho que foi validado anteriormente
+* bestblockhash : (string) o hash do melhor bloco atual
+* difficulty : (numerico) a dificuldade atual
+* verificationprogress : (numerico) estimativa do progresso da verificação [0..1]
+* chainwork : (string) quantidade total de trabalho na cadeia ativa, em hexadecimal
+* pruned : (boolean) se os blocos estão sujeitos a cortes
+* pruneheight : (numerico) bloco mais alto disponível
+* softforks : (array) status de softforks em andamento
 
-####Query UTXO set
+####Configuração UTXO da consulta
 `GET /rest/getutxos/<checkmempool>/<txid>-<n>/<txid>-<n>/.../<txid>-<n>.<bin|hex|json>`
 
-The getutxo command allows querying of the UTXO set given a set of outpoints.
-See BIP64 for input and output serialisation:
+O comando getutxo permite consultar o conjunto UTXO dado uma série de outpoints.
+Veja BIP64 para serialização de entrada e saída:
 https://github.com/bitcoin/bips/blob/master/bip-0064.mediawiki
 
-Example:
+Exemplo:
 ```
 $ curl localhost:15527/rest/getutxos/checkmempool/b2cdfd7b89def827ff8af7cd9bff7627ff72e5e8b0f71210f92ea7a4000c5d75-0.json 2>/dev/null | json_pp
 {
@@ -79,20 +79,19 @@ $ curl localhost:15527/rest/getutxos/checkmempool/b2cdfd7b89def827ff8af7cd9bff76
 }
 ```
 
-####Memory pool
+####Pool de memória
 `GET /rest/mempool/info.json`
 
-Returns various information about the TX mempool.
-Only supports JSON as output format.
-* size : (numeric) the number of transactions in the TX mempool
-* bytes : (numeric) size of the TX mempool in bytes
-* usage : (numeric) total TX mempool memory usage
-
+Retorna várias informaç~ies sobre o pool de memória TX.
+Suporta somente JSON como formato de saída.
+* size : (numeric) o número de transações no pool de memória TX 
+* bytes : (numeric) tamanho do pool de memória TX mempool em bytes
+* usage : (numeric) uso total da memória TX
 `GET /rest/mempool/contents.json`
 
-Returns transactions in the TX mempool.
-Only supports JSON as output format.
+Retorna transações no pool de memória TX.
+Suporta somente JSON como formato de saída.
 
-Risks
+Riscos
 -------------
-Running a web browser on the same node with a REST enabled criptoreald can be a risk. Accessing prepared XSS websites could read out tx/block data of your node by placing links like `<script src="http://127.0.0.1:5527/rest/tx/1234567890.json">` which might break the nodes privacy.
+Executar um navegador web no mesmo node com um Criptoreal habilitado para REST pode ser um risco. O acesso a sites XSS preparados pode ler dados tx/block do seu node colocando links como `<script src="http://127.0.0.1:5527/rest/tx/1234567890.json">` que pode levar à quebra da privacidade dos nodes.
