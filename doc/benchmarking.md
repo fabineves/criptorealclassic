@@ -1,13 +1,12 @@
 Benchmarking
 ============
 
-Criptoreal Core has an internal benchmarking framework, with benchmarks
-for cryptographic algorithms such as SHA1, SHA256, SHA512 and RIPEMD160. As well as the rolling bloom filter.
+O Criptoreal Core possui uma estrutura de benchmarking interna, com benchmarks para algoritmos criptográficos como SHA1, SHA256, SHA512 e RIPEMD160. Assim como o filtro rolling bloom.
 
-After compiling criptoreal-core, the benchmarks can be run with:
+Após compilar o criptoreal-core, os benchmarks podem ser executados com:
 `src/bench/bench_criptoreal`
 
-The output will look similar to:
+O resultado será semelhante ao:
 ```
 #Benchmark,count,min,max,average
 RIPEMD160,448,0.001245033173334,0.002638196945190,0.002461894814457
@@ -22,9 +21,9 @@ Sleep100ms,10,0.205592155456543,0.210056066513062,0.104166316986084
 Trig,67108864,0.000000014997003,0.000000015448112,0.000000015188842
 ```
 
-More benchmarks are needed for, in no particular order:
-- Script Validation
-- CCoinDBView caching
-- Coins database
-- Memory pool
-- Wallet coin selection
+Mais benchmarks são necessários para, em nenhuma ordem em particular:
+- Validação de Script
+- Cache de CCoinDBView 
+- Banco de dados de moedas
+- Pool de memória
+- Seleção da moeda da carteira
