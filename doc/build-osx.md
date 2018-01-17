@@ -1,99 +1,99 @@
-Mac OS X Build Instructions and Notes
+Notas e instruções de compilação no Mac OS X
 ====================================
-The commands in this guide should be executed in a Terminal application.
-The built-in one is located in `/Applications/Utilities/Terminal.app`.
+Os comandos neste guia devem ser executados em um aplicativo do terminal.
+O nativo está localizado em `/Applications/Utilities/Terminal.app`.
 
-Preparation
+Preparação
 -----------
-Install the OS X command line tools:
+Instale as ferramentas da linha de comando do OS X:
 
 `xcode-select --install`
 
-When the popup appears, click `Install`.
+Quando aparecer o popup, clique `Install`.
 
-Then install [Homebrew](http://brew.sh).
+Então instale [Homebrew](http://brew.sh).
 
-Dependencies
+Dependências
 ----------------------
 
     brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-config protobuf --c++11 qt5 libevent
 
-In case you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG
+No caso de você querer montar a imagem do disco com `make deploy` (.dmg / opcional), você precisa do RSVG
 
     brew install librsvg
 
-NOTE: Building with Qt4 is still supported, however, could result in a broken UI. Building with Qt5 is recommended.
+NOTA: Compilar com Qt4 ainda é suportado, entretanto, pode resultar em uma UI quebrada. Compilar com Qt5 é recomendado.
 
-Build Criptoreal Core
+Compilar Criptoreal Core
 ------------------------
 
-1. Clone the criptoreal source code and cd into `criptoreal`
+1. Faça uma cópia do código fonte do criptoreal source code e cd em `criptoreal`
 
         git clone https://github.com/criptoreal/criptoreal
         cd criptoreal
 
-2.  Build criptoreal-core:
+2.  Compilar criptoreal-core:
 
-    Configure and build the headless criptoreal binaries as well as the GUI (if Qt is found).
+    Configure e compile os binários criptoreal assim como o GUI (se Qt for encontrado).
 
-    You can disable the GUI build by passing `--without-gui` to configure.
+   Você pode desabilitar GUI build passando `--without-gui` para configurar.
 
         ./autogen.sh
         ./configure
         make
 
-3.  It is recommended to build and run the unit tests:
+3.  É recomendado a compilação e a execução das unidades de teste:
 
         make check
 
-4.  You can also create a .dmg that contains the .app bundle (optional):
+4.  Você também pode criar um .dmg que contenha o pacote .app (opcional):
 
         make deploy
 
-Running
+Execução
 -------
 
-Criptoreal Core is now available at `./src/criptoreald`
+Criptoreal Core agora está disponível em `./src/criptoreald`
 
-Before running, it's recommended you create an RPC configuration file.
+Antes de executá-lo, é recomendado criar um arquivo de configuração RPC.
 
     echo -e "rpcuser=criptorealrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Criptoreal/criptoreal.conf"
 
     chmod 600 "/Users/${USER}/Library/Application Support/Criptoreal/criptoreal.conf"
 
-The first time you run criptoreald, it will start downloading the blockchain. This process could take several hours.
+A primeira vez que você executar o criptoreald, ele dará início ao download da blockchain. Este processo pode levar várias horas.
 
-You can monitor the download process by looking at the debug.log file:
+Você pode monitorar o processo de download verificando o arquivo debug.log:
 
     tail -f $HOME/Library/Application\ Support/Criptoreal/debug.log
 
-Other commands:
+Outros comandos:
 -------
 
     ./src/criptoreald -daemon # Starts the criptoreal daemon.
     ./src/criptoreal-cli --help # Outputs a list of command-line options.
     ./src/criptoreal-cli help # Outputs a list of RPC commands when the daemon is running.
 
-Using Qt Creator as IDE
+Usando o Qt Creator como IDE
 ------------------------
-You can use Qt Creator as an IDE, for criptoreal development.
-Download and install the community edition of [Qt Creator](https://www.qt.io/download/).
-Uncheck everything except Qt Creator during the installation process.
+Você pode usar o Qt Creator como um IDE, para desenvolvimento de criptoreal development.
+Faça o download e instale a edição do [Qt Creator](https://www.qt.io/download/).
+Desmarque todas as opções exceto Qt Creator durante o processo de instalação.
 
-1. Make sure you installed everything through Homebrew mentioned above
-2. Do a proper ./configure --enable-debug
-3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
-4. Enter "criptoreal-qt" as project name, enter src/qt as location
-5. Leave the file selection as it is
-6. Confirm the "summary page"
-7. In the "Projects" tab select "Manage Kits..."
-8. Select the default "Desktop" kit and select "Clang (x86 64bit in /usr/bin)" as compiler
-9. Select LLDB as debugger (you might need to set the path to your installation)
-10. Start debugging with Qt Creator
+1. Tenha certeza de que você instalou tudo através do Homebrew mencionado acima
+2. Execute um ./configure --enable-debug
+3. No Qt Creator escolha "Novo Projeto" -> Importar Projeto -> Importar Projeto Existente
+4. Digite "criptoreal-qt" como nome do projeto, informe src/qt como local
+5. Deixe a seleção do arquivo como está
+6. Confirme a "página de resumo"
+7. Na aba "Projetos" selecione "Gerenciar Kits..."
+8. Escolha o kit "Desktop" padrão e selecione "Clang (x86 64bit in /usr/bin)" como compilador
+9. Selecione LLDB como depurador (talvez seja necessário configurar o caminho para sua instalação)
+10. Comece a depurar com o Qt Creator
 
-Notes
+Notas
 -----
 
-* Tested on OS X 10.8 through 10.12 on 64-bit Intel processors only.
+* Testados nas versões OS X 10.8 até 10.12 de 64-bit somente processadores Intel.
 
-* Building with downloaded Qt binaries is not officially supported. See the notes in [#7714](https://github.com/bitcoin/bitcoin/issues/7714)
+* Não há suporte para a compilação de binários Qt que foram baixados. Veja as notas em [#7714](https://github.com/bitcoin/bitcoin/issues/7714)
