@@ -1,71 +1,55 @@
-WINDOWS BUILD NOTES
+NOTAS DE COMPILAÇÃO DO WINDOWS
 ====================
 
-Below are some notes on how to build Criptoreal Core for Windows.
+Abaixo estão algumas notas em como compilar Criptoreal no Windows.
 
-Most developers use cross-compilation from Ubuntu to build executables for
-Windows. This is also used to build the release binaries.
+A maioria dos desenvolvedores usam compilação cruzada do Ubuntu para compilar executáveis para o Windows. Isto também é usado para compilar os binários de lançamento.
 
-While there are potentially a number of ways to build on Windows (for example using msys / mingw-w64),
-using the Windows Subsystem For Linux is the most straightforward. If you are building with
-another method, please contribute the instructions here for others who are running versions
-of Windows that are not compatible with the Windows Subsystem for Linux.
+Embora existam várias maneiras de compilar no Windows (por exemplo, usando msys / mingw-w64), usar o subsistema do Windows para Linux é a forma mais direta. Se você está compilando com outro método, por favor, contribua aqui com instruções para outras pessoas que estão executando versões do Windows que não são compatíveis com o subsistema Windows para Linux. 
 
-Compiling with Windows Subsystem For Linux
+Compilando com o subsistema Windows para Linux
 -------------------------------------------
 
-With Windows 10, Microsoft has released a new feature named the [Windows
-Subsystem for Linux](https://msdn.microsoft.com/commandline/wsl/about). This
-feature allows you to run a bash shell directly on Windows in an Ubuntu-based
-environment. Within this environment you can cross compile for Windows without
-the need for a separate Linux VM or server.
+Com o Windows 10, a Microsoft lançou um novo recurso chamado [Subsistema Windows para Linux](https://msdn.microsoft.com/commandline/wsl/about). Este recurso permite que você execute um shell bash diretamente no Windows dentro de um ambiente baseado no Ubuntu. Dentro deste ambiente, você pode cruzar a compilação para o Windows sem a necessidade de uma VM rodando Linux ou um servidor.
 
-This feature is not supported in versions of Windows prior to Windows 10 or on
-Windows Server SKUs. In addition, it is available [only for 64-bit versions of
-Windows](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide).
+Este recurso não é suportado nas versões anteriores ao Windows 10 ou em SKUs do Windows Server. Além disso, está disponível [somente para versões 64-bit do Windows](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide).
 
-To get the bash shell, you must first activate the feature in Windows.
+Para obter o shell bash, você deve ativar primeiramente este recurso no Windows.
 
-1. Turn on Developer Mode
-  * Open Settings -> Update and Security -> For developers
-  * Select the Developer Mode radio button
-  * Restart if necessary
-2. Enable the Windows Subsystem for Linux feature
-  * From Start, search for "Turn Windows features on or off" (type 'turn')
-  * Select Windows Subsystem for Linux (beta)
-  * Click OK
-  * Restart if necessary
-3. Complete Installation
-  * Open a cmd prompt and type "bash"
-  * Accept the license
-  * Create a new UNIX user account (this is a separate account from your Windows account)
+1. Ative o modo desenvolvedor
+  * Abrir Configurações -> Atualização e Segurança -> Para desenvolvedores
+  * Selecione o botão de modo desenvolvedor
+  * Reinicie se necessário
+2. Habilite o recurso do subsistema de Windows para Linux
+  * A partir do Iniciar, procure por "Ligar recursos do Windows" (type 'turn')
+  * Selecione Subsistema do Windows para Linux (beta)
+  * Clique em OK
+  * Reinicie se necessário
+3. Complete a instalação
+  * Abra o prompt de comando (cmd) e digite "bash"
+  * Aceite a licença de uso
+  * Crie uma nova conta de usuário UNIX (esta é uma conta separada da sua conta Windows)
 
-After the bash shell is active, you can follow the instructions below, starting
-with the "Cross-compilation" section. Compiling the 64-bit version is
-recommended but it is possible to compile the 32-bit version.
+Após o shell bash estiver ativo,você pode seguir as instruções abaixo, começando com a seção "Cross-compilation". Compilar a versão de  64-bit version é recomendada mas é possível compilar também a versão de 32-bit.
 
-Cross-compilation
+Compilação Cruzada
 -------------------
 
-These steps can be performed on, for example, an Ubuntu VM. The depends system
-will also work on other Linux distributions, however the commands for
-installing the toolchain will be different.
+Estas etapas podem ser realizadas em, por exemplo, uma VM do Ubuntu. O sistema dependente também funcionará em outras distribuições Linux, entretanto, os comandos para instalar a cadeia de ferramentas serão diferentes.
 
-First, install the general dependencies:
+Primeiramente, instale as dependências gerais:
 
     sudo apt-get install build-essential libtool autotools-dev automake pkg-config bsdmainutils curl
 
-A host toolchain (`build-essential`) is necessary because some dependency
-packages (such as `protobuf`) need to build host utilities that are used in the
-build process.
+Uma cadeia de ferramentas padrão (`build-essential`) é necessária pois alguns pacotes de dependência (como o `protobuf`) precisa compilar os utilitários de host que são usados no processo de compilação.
 
-## Building for 64-bit Windows
+## Compilando para o Windows 64-bit
 
-To build executables for Windows 64-bit, install the following dependencies:
+Para compilar executáveis para o Windows 64-bit, instale as seguintes dependências:
 
     sudo apt-get install g++-mingw-w64-x86-64 mingw-w64-x86-64-dev
 
-Then build using:
+Em seguida compile usando:
 
     cd depends
     make HOST=x86_64-w64-mingw32
@@ -74,13 +58,13 @@ Then build using:
     CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/
     make
 
-## Building for 32-bit Windows
+## Compilando para o Windows 32-bit 
 
-To build executables for Windows 32-bit, install the following dependencies:
+Para compilar executáveis para o Windows 32-bit, instale as seguintes dependências:
 
     sudo apt-get install g++-mingw-w64-i686 mingw-w64-i686-dev 
 
-Then build using:
+Em seguida compile usando:
 
     cd depends
     make HOST=i686-w64-mingw32
@@ -89,16 +73,13 @@ Then build using:
     CONFIG_SITE=$PWD/depends/i686-w64-mingw32/share/config.site ./configure --prefix=/
     make
 
-## Depends system
+## Sistema de dependência
 
-For further documentation on the depends system see [README.md](../depends/README.md) in the depends directory.
+Para documentação sobre o sistema de dependência veja [README.md](../depends/README.md) no diretório depends .
 
-Installation
+Instalação
 -------------
 
-After building using the Windows subsystem it can be useful to copy the compiled
-executables to a directory on the windows drive in the same directory structure
-as they appear in the release `.zip` archive. This can be done in the following
-way. This will install to `c:\workspace\criptoreal`, for example:
+Após compilar usando o subsistema do Windows pode ser útil copiar as compilações executáveis para um diretório na mesma unidade do Windows dentro da estrutura de diretorio que aparece na versão `.zip`. Isto só pode ser feito da seguinte forma. Será instalado em `c:\workspace\criptoreal`, por exemplo:
 
     make install DESTDIR=/mnt/c/workspace/criptoreal
