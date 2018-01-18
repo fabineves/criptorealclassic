@@ -1,20 +1,19 @@
-UNIX BUILD NOTES
+NOTAS SOBRE A COMPILAÇÃO NO UNIX
 ====================
-Some notes on how to build Criptoreal Core in Unix.
+Algumas notas sobre como compilar o Criptoreal Core no Unix.
 
-(for OpenBSD specific instructions, see [build-openbsd.md](build-openbsd.md))
+(para instruções específicas do OpenBSD, veja [build-openbsd.md](build-openbsd.md))
 
-Note
+Nota
 ---------------------
-Always use absolute paths to configure and compile criptoreal and the dependencies,
-for example, when specifying the path of the dependency:
+Sempre use caminhos absolutos para configurar e compilar o criptoreal e suas dependências,
+por exemplo, ao especificar o caminho da dependência:
 
 	../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
 
-Here BDB_PREFIX must be an absolute path - it is defined using $(pwd) which ensures
-the usage of the absolute path.
+Aqui o BDB_PREFIX deve ser um caminho absoluto - é definido usando o $(pwd) que garante o uso do caminho absoluto.
 
-To Build
+Para Compilar
 ---------------------
 
 ```bash
@@ -24,17 +23,17 @@ make
 make install # optional
 ```
 
-This will build criptoreal-qt as well if the dependencies are met.
+Isto também irá compilar o criptoreal-qt se as dependências forem atendidas.
 
-Dependencies
+Dependências
 ---------------------
 
-These dependencies are required:
+Estas dependências são obrigatórias:
 
  Library     | Purpose          | Description
  ------------|------------------|----------------------
- libssl      | Crypto           | Random Number Generation, Elliptic Curve Cryptography
- libboost    | Utility          | Library for threading, data structures, etc
+ libssl      | Crypto           | Geração de números aleatórios, Criptografia de curva elíptica
+ libboost    | Utility          | Biblioteca para encadeamento, estrutura de dados, etc
  libevent    | Networking       | OS independent asynchronous networking
 
 Optional dependencies:
