@@ -1,27 +1,19 @@
-Developer Notes
+Notas do desenvolvedor
 ===============
 
-Various coding styles have been used during the history of the codebase,
-and the result is not very consistent. However, we're now trying to converge to
-a single style, so please use it in new code. Old code will be converted
-gradually and you are encouraged to use the provided
-[clang-format-diff script](/contrib/devtools/README.md#clang-format-diffpy)
-to clean up the patch automatically before submitting a pull request.
+Vários estilos de codificação foram usados durante o histórico do código base e o resultado não foi muito consistente. Entretanto, estamos tentando convergir para um estilo único, então use-o em um novo código. O codigo antigo será convertido gradualmente e você é encorajado a usar o [clang-format-diff script](/contrib/devtools/README.md#clang-format-diffpy) que é fornecido para limpar o patch automaticamente antes de enviar uma pull request.
 
-- Basic rules specified in [src/.clang-format](/src/.clang-format).
-  - Braces on new lines for namespaces, classes, functions, methods.
-  - Braces on the same line for everything else.
-  - 4 space indentation (no tabs) for every block except namespaces.
-  - No indentation for `public`/`protected`/`private` or for `namespace`.
-  - No extra spaces inside parenthesis; don't do ( this )
-  - No space after function names; one space after `if`, `for` and `while`.
-  - If an `if` only has a single-statement then-clause, it can appear
-    on the same line as the if, without braces. In every other case,
-    braces are required, and the then and else clauses must appear
-    correctly indented on a new line.
-  - `++i` is preferred over `i++`.
+- Regras básicas especificadas em  [src/.clang-format](/src/.clang-format).
+  - Chaves em novas linhas para namespaces, classes, funções, métodos.
+  - Chaves na mesma linha para o restante.
+  - 4 indentações de espaço (sem abas) para cada bloco exceto namespaces.
+  - Sem indentação para `public`/`protected`/`private` ou para `namespace`.
+  - Sem espaço extra dentro de parênteses; não faça ( isto )
+  - Sem espaço após os nomes das funções; um espaço após `if`, `for` e `while`.
+  - Se um `if` só tem uma única declaração, pode aparecer na mesma linha que o if, sem as chaves. Em qualquer outro caso, chaves são obrigatórias, e as cláusulas then e else devem aparecer corretamente indentadas em uma nova linha.
+  - `++i` é preferível ao invés de `i++`.
 
-Block style example:
+Exemplo de estilo de bloco:
 ```c++
 namespace foo
 {
@@ -29,9 +21,9 @@ class Class
 {
     bool Function(const std::string& s, int n)
     {
-        // Comment summarising what this section of code does
+        // Comentário que resume o que esta área do código faz
         for (int i = 0; i < n; ++i) {
-            // When something fails, return early
+            // Quando algo falhar, retorne antes
             if (!Something()) return false;
             ...
             if (SomethingElse()) {
@@ -41,55 +33,55 @@ class Class
             }
         }
 
-        // Success return is usually at the end
+        // O retorno informando sucesso geralmente está no final
         return true;
     }
 }
 }
 ```
 
-Doxygen comments
+Comentários Doxygen 
 -----------------
 
-To facilitate the generation of documentation, use doxygen-compatible comment blocks for functions, methods and fields.
+Para facilitar a geração da documentação, use blocos de comentários compatíveis com doxygen para funções, métodos e campos.
 
-For example, to describe a function use:
+Por exemplo, para descrever uma função use:
 ```c++
 /**
  * ... text ...
- * @param[in] arg1    A description
- * @param[in] arg2    Another argument description
- * @pre Precondition for function...
+ * @param[in] arg1    Uma descrição
+ * @param[in] arg2    Outra descrição do argumento
+ * @pre Pré-requisito para a função...
  */
 bool function(int arg1, const char *arg2)
 ```
-A complete list of `@xxx` commands can be found at http://www.stack.nl/~dimitri/doxygen/manual/commands.html.
-As Doxygen recognizes the comments by the delimiters (`/**` and `*/` in this case), you don't
-*need* to provide any commands for a comment to be valid; just a description text is fine.
+Uma lista completa de comandos `@xxx` podem ser encontradas em http://www.stack.nl/~dimitri/doxygen/manual/commands.html.
+Como Doxygen reconhece os comentários pelos delimitadores (`/**` and `*/` neste caso), você não
+*precisa* informar qualquer comando para um que um comentário seja válido; apenas um texto de descrição é suficiente.
 
-To describe a class use the same construct above the class definition:
+Para descrever uma classe use a mesma construção acima da definição da classe:
 ```c++
 /**
- * Alerts are for notifying old versions if they become too obsolete and
- * need to upgrade. The message is displayed in the status bar.
+ * Alertas são para notificações de versões antigas caso elas se tornem obsoletas
+ * e precisa do upgrade. Esta mensagem é mostrada na barra de status.
  * @see GetWarnings()
  */
 class CAlert
 {
 ```
 
-To describe a member or variable use:
+Para descrever um membro ou uso variável:
 ```c++
-int var; //!< Detailed description after the member
+int var; //!< Descrição detalhada após o membro
 ```
 
-or
+ou
 ```cpp
-//! Description before the member
+//! Descrição antes do membro
 int var;
 ```
 
-Also OK:
+Também está OK:
 ```c++
 ///
 /// ... text ...
@@ -97,67 +89,49 @@ Also OK:
 bool function2(int arg1, const char *arg2)
 ```
 
-Not OK (used plenty in the current source, but not picked up):
+Não OK (usado muito no fonte atual, mas não retirado):
 ```c++
 //
-// ... text ...
+// ... texto ...
 //
 ```
 
-A full list of comment syntaxes picked up by doxygen can be found at http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html,
-but if possible use one of the above styles.
+Uma lista completa de sintaxes de comentários obtidas pelo doxygen pode ser encontrada em http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html, mas se possível, use um dos estilos acima.
 
-Development tips and tricks
+Dicas e truques de desenvolvimento
 ---------------------------
 
-**compiling for debugging**
+**compilando para depuração**
 
-Run configure with the --enable-debug option, then make. Or run configure with
-CXXFLAGS="-g -ggdb -O0" or whatever debug flags you need.
+Execute a configuração com a opção --enable-debug, então make. Ou então execute a configuração com CXXFLAGS="-g -ggdb -O0" ou qualquer outras flags de depuração que você precisa.
 
 **debug.log**
 
-If the code is behaving strangely, take a look in the debug.log file in the data directory;
-error and debugging messages are written there.
+Se o código estiver se comportando de maneira estranha, dê uma olhada no arquivo debug.log no diretório de dados; mensagens de erro e de depuração são escritas neste arquivo.
 
-The -debug=... command-line option controls debugging; running with just -debug or -debug=1 will turn
-on all categories (and give you a very large debug.log file).
+A opção de linha de comando -debug=... controla a depuração; executando apenas -debug ou -debug=1 irá interferir em todas as categorias (e te dará um arquivo debug.log muito grande).
 
-The Qt code routes qDebug() output to debug.log under category "qt": run with -debug=qt
-to see it.
+O código Qt direciona a saída qDebug() para o debug.log sob a categoria "qt": execute com -debug=qt para verificar.
 
-**testnet and regtest modes**
+**Modos testnet e regtest**
 
-Run with the -testnet option to run with "play criptoreals" on the test network, if you
-are testing multi-machine code that needs to operate across the internet.
+Execute com a opção -testnet para executar com "play criptoreais" na rede de teste, se você está testando o código multi-máquina, isto precisa ser feito através da internet.
 
-If you are testing something that can run on one machine, run with the -regtest option.
-In regression test mode, blocks can be created on-demand; see qa/rpc-tests/ for tests
-that run in -regtest mode.
+Se você está testando algo que pode ser executando em uma máquina, execute com a opção -regtest.
+No modo de teste de regressão, os blocos podem ser criados sob demanda; veja qa/rpc-tests/ para testes que executem o modo -regtest.
 
 **DEBUG_LOCKORDER**
 
-Criptoreal Core is a multithreaded application, and deadlocks or other multithreading bugs
-can be very difficult to track down. Compiling with -DDEBUG_LOCKORDER (configure
-CXXFLAGS="-DDEBUG_LOCKORDER -g") inserts run-time checks to keep track of which locks
-are held, and adds warnings to the debug.log file if inconsistencies are detected.
+Criptoreal Core é um aplicativo multiprocessado, os deadlocks ou outros tipos de erros podem ser muito difíceis de serem rastreados. Compiland com o -DDEBUG_LOCKORDER (configurar CXXFLAGS="-DDEBUG_LOCKORDER -g") insere verificações de tempo de execução para acompanhar quais os bloqueios são mantidos, e adiciona avisos no arquivo debug.log caso inconsistências sejam detectadas.
 
-Locking/mutex usage notes
+Notas de uso de Bloqueio/mutex 
 -------------------------
 
-The code is multi-threaded, and uses mutexes and the
-LOCK/TRY_LOCK macros to protect data structures.
+O codigo tem várias linhas, e usa mutexes e as macros LOCK/TRY_LOCK para proteger a estrutura de dados.
 
-Deadlocks due to inconsistent lock ordering (thread 1 locks cs_main
-and then cs_wallet, while thread 2 locks them in the opposite order:
-result, deadlock as each waits for the other to release its lock) are
-a problem. Compile with -DDEBUG_LOCKORDER to get lock order
-inconsistencies reported in the debug.log file.
+Devido ao pedido de bloqueio inconsistente dos deadlocks (o tópico 1 trava cs_main e então cs_wallet, enquanto o tópico 2 trava na ordem contrária: resultado, o impasse como cada um espera com que o outro libere o seu bloqueio) são um problema. Compile com -DDEBUG_LOCKORDER para obter as inconsistências de ordem de bloqueio relatadas no arquivo debug.log.
 
-Re-architecting the core code so there are better-defined interfaces
-between the various components is a goal, with any necessary locking
-done by the components (e.g. see the self-contained CKeyStore class
-and its cs_KeyStore lock for example).
+Re-arquitetar o código do núcleo para que haja interfaces melhor definidas entre os vários componentes é o objetivo, com qualquer bloqueio necessário feito pelos componentes (por exemplo, veja a classe CKeyStore autônoma e seu bloqueio cs_KeyStore).
 
 Threads
 -------
