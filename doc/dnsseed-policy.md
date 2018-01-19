@@ -1,54 +1,30 @@
-Expectations for DNS Seed operators
-====================================
+Expectativas para operadores de DNS Seed
+========================================
 
-Criptoreal Core attempts to minimize the level of trust in DNS seeds,
-but DNS seeds still pose a small amount of risk for the network.
-As such, DNS seeds must be run by entities which have some minimum
-level of trust within the Criptoreal community.
+O Criptoreal Core tenta minimizar o nível de confiança nos DNS seeds, mas os DNS seeds ainda representam uma pequena quantidade de risco para a rede. Como tal, os DNS seeds devem ser geridas por entidades que possuem algum nível mínimo de confiança na comunidade Criptoreal.
 
-Other implementations of Criptoreal software may also use the same
-seeds and may be more exposed. In light of this exposure, this
-document establishes some basic expectations for operating dnsseeds.
+Outras implementações do software Criptoreal também podem usar as mesmas sementes e podem estar ainda mais expostas. Este documento estabelece algumas expectativas básicas para a operação de dnsseeds.
 
-0. A DNS seed operating organization or person is expected to follow good
-host security practices, maintain control of applicable infrastructure,
-and not sell or transfer control of the DNS seed. Any hosting services
-contracted by the operator are equally expected to uphold these expectations.
+0. Uma organização ou uma pessoa operando o DNS seed deve seguir boas práticas de segurança, manter o controle de infra-estrutura aplicável,e não vender ou transferir o controle de nenhuma DNS seed. Todos os serviços de hospedagem contratados pelo operador devem manter estas expectativas.
 
-1. The DNS seed results must consist exclusively of fairly selected and
-functioning Criptoreal nodes from the public network to the best of the
-operator's understanding and capability.
+1. Os resultados da DNS seed devem consistir exclusivamente em nodes Criptoreal selecionados da rede pública para o melhor entendimento e capacidade do operador.
 
-2. For the avoidance of doubt, the results may be randomized but must not
-single-out any group of hosts to receive different results unless due to an
-urgent technical necessity and disclosed.
+2. Para evitar dúvidas, os resultados podem ser randômicos, mas não devem separar nenhum grupo para receber resultados diferentes, a menos que tenha havido uma necessidade técnica urgente.
 
-3. The results may not be served with a DNS TTL of less than one minute.
+3. Os resultados podem não ser atendidos com um DNS TTL de menos de um minuto.
 
-4. Any logging of DNS queries should be only that which is necessary
-for the operation of the service or urgent health of the Criptoreal
-network and must not be retained longer than necessary nor disclosed
-to any third party.
+4. Qualquer registro de consulta DNS deve ser apenas o necessário para a operação do serviço ou para a saúde urgente da rede Criptoreal e não deve durar mais que o necessário nem divulgado a terceiros.
 
-5. Information gathered as a result of the operators node-spidering
-(not from DNS queries) may be freely published or retained, but only
-if this data was not made more complete by biasing node connectivity
-(a violation of expectation (1)).
+5. As informações obtidas como resultado dos operadores node-spidering (não de consultadas DNS) podem ser livremente publicadas ou então retidas, mas somente se estes dados não foram obtidos através conectividade biasing node (uma violação de expectativas (1)).
 
-6. Operators are encouraged, but not required, to publicly document the
-details of their operating practices.
+6. Operadores são encorajados, mas não obrigados, a documentar publicamente os detalhes das suas práticas operacionais.
 
-7. A reachable email contact address must be published for inquiries
-related to the DNS seed operation.
+7. Um endereço de email acessível deve ser publicado para consultas relacionadas a operações de DNS Seed.
 
-If these expectations cannot be satisfied the operator should
-discontinue providing services and contact the active Criptoreal
-Core development team as well as posting on
-[criptoreal-dev](https://groups.google.com/forum/#!forum/criptoreal-dev).
+Se o operador não estiver de acordo com estas regras, ele deve interromper a prestação de serviços e entrar em contato com o time de desenvolvedores do Criptoreal Core assim como publicar no [criptoreal-dev](https://groups.google.com/forum/#!forum/criptoreal-dev).
 
-Behavior outside of these expectations may be reasonable in some
-situations but should be discussed in public in advance.
+O comportamento fora destas expectativas pode ser aceito em algumas situações, mas deve ser discutida em público e com antecedência.
 
-See also
+Veja também
 ----------
-- [criptoreal-seeder](https://github.com/pooler/criptoreal-seeder) is a reference implementation of a DNS seed.
+- [criptoreal-seeder](https://github.com/pooler/criptoreal-seeder) é uma referência de implementação de um DNS seed.
