@@ -133,197 +133,157 @@ Devido ao pedido de bloqueio inconsistente dos deadlocks (o tópico 1 trava cs_m
 
 Re-arquitetar o código do núcleo para que haja interfaces melhor definidas entre os vários componentes é o objetivo, com qualquer bloqueio necessário feito pelos componentes (por exemplo, veja a classe CKeyStore autônoma e seu bloqueio cs_KeyStore).
 
-Threads
+Tópicos
 -------
 
-- ThreadScriptCheck : Verifies block scripts.
+- ThreadScriptCheck : Verifica scripts de bloco.
 
-- ThreadImport : Loads blocks from blk*.dat files or bootstrap.dat.
+- ThreadImport : Carrega blocos de arquivos blk*.dat files ou bootstrap.dat.
 
-- StartNode : Starts other threads.
+- StartNode : Inicia outros tópicos.
 
-- ThreadDNSAddressSeed : Loads addresses of peers from the DNS.
+- ThreadDNSAddressSeed : Carrega endereços dos peers do DNS.
 
-- ThreadMapPort : Universal plug-and-play startup/shutdown
+- ThreadMapPort : Inicialização/Desligamento universal plug-and-play 
 
-- ThreadSocketHandler : Sends/Receives data from peers on port 5526.
+- ThreadSocketHandler : Envia/Recebe dados dos peers na porta 5526.
 
-- ThreadOpenAddedConnections : Opens network connections to added nodes.
+- ThreadOpenAddedConnections : Abre conexões de rede para os nodes adicionados.
 
-- ThreadOpenConnections : Initiates new connections to peers.
+- ThreadOpenConnections : Inicia novas conexões para os peers.
 
-- ThreadMessageHandler : Higher-level message handling (sending and receiving).
+- ThreadMessageHandler : Manipulação de mensagens de nível superior (envio e recebimento).
 
-- DumpAddresses : Dumps IP addresses of nodes to peers.dat.
+- DumpAddresses : Descarrega endereços IP dos nodes para o arquivo peers.dat.
 
-- ThreadFlushWalletDB : Close the wallet.dat file if it hasn't been used in 500ms.
+- ThreadFlushWalletDB : Fecha o arquivo wallet.dat caso não tenha sido usado em 500ms.
 
-- ThreadRPCServer : Remote procedure call handler, listens on port 5527 for connections and services them.
+- ThreadRPCServer : Controlador de chamadas de procedimento remoto, escuta na porta 5527 para conexões e prestação de serviços.
 
-- BitcoinMiner : Generates criptoreals (if wallet is enabled).
+- BitcoinMiner : Gera criptoreais (caso a carteira esteja habilitada).
 
-- Shutdown : Does an orderly shutdown of everything.
+- Shutdown : Realiza uma parada ordenada de tudo.
 
-Ignoring IDE/editor files
+Ignorando aquivos IDE/editor 
 --------------------------
 
-In closed-source environments in which everyone uses the same IDE it is common
-to add temporary files it produces to the project-wide `.gitignore` file.
+Em ambientes fechados onde todos usam o mesmo IDE, é comum adicionar os arquivos temporários que ele produz no arquivo `.gitignore` em todo o projeto.
 
-However, in open source software such as Criptoreal Core, where everyone uses
-their own editors/IDE/tools, it is less common. Only you know what files your
-editor produces and this may change from version to version. The canonical way
-to do this is thus to create your local gitignore. Add this to `~/.gitconfig`:
+Entretanto, em software de código aberto como o Criptoreal Core, onde todos usam seus próprios editores/IDE/Ferramentas, isto é menos comum. Somente você sabe quais os arquivos que seu editor produz e isto pode mudar de versão para versão. A forma canônica de fazer isto é criar o seu gitignore local. Adicione isso a `~/.gitconfig`:
 
 ```
 [core]
         excludesfile = /home/.../.gitignore_global
 ```
 
-(alternatively, type the command `git config --global core.excludesfile ~/.gitignore_global`
-on a terminal)
+(em alternativa, digite o comando `git config --global core.excludesfile ~/.gitignore_global`
+no terminal)
 
-Then put your favourite tool's temporary filenames in that file, e.g.
+Então coloque os nomes dos arquivos temporários da sua ferramenta favorita neste arquivo, e.g.
 ```
 # NetBeans
 nbproject/
 ```
 
-Another option is to create a per-repository excludes file `.git/info/exclude`.
-These are not committed but apply only to one repository.
+Outra opção é criar um repositório excluindo o arquivo `.git/info/exclude`. Estes não são comprometidos, mas se aplicam a apenas um repositório.
 
-If a set of tools is used by the build system or scripts the repository (for
-example, lcov) it is perfectly acceptable to add its files to `.gitignore`
-and commit them.
+Se um conjunto de ferramentas é usado pelo sistema de compilação ou de scripts, o repositório (por exemplo, lcov) é aceitável adicionar seus arquivos ao `.gitignore` e comprometê-los.
 
-Development guidelines
+Diretrizes de Desenvolvimento
 ============================
 
-A few non-style-related recommendations for developers, as well as points to
-pay attention to for reviewers of Criptoreal Core code.
+Algumas recomendações não relacionadas ao estilo para desenvolvedores, assim como os pontos para prestar atenção aos revisores do código do Criptoreal Core.
 
-General Criptoreal Core
+Núcleo Criptoreal Core
 ----------------------
 
-- New features should be exposed on RPC first, then can be made available in the GUI
+- Novas funcionalidades devem ser expostas no RPC primeiramente, depois podem ser disponibilizadas na GUI
 
-  - *Rationale*: RPC allows for better automatic testing. The test suite for
-    the GUI is very limited
+  - *Razão*: RPC permite um melhor teste automático. O conjunto de testes para GUI é muito limitado.
 
-- Make sure pull requests pass Travis CI before merging
+- Certifique-se que de todos os pedidos de pool passem por Travis CI antes da fusão
 
-  - *Rationale*: Makes sure that they pass thorough testing, and that the tester will keep passing
-     on the master branch. Otherwise all new pull requests will start failing the tests, resulting in
-     confusion and mayhem
+  - *Razão*: Certifique-se de que eles passem em testes completos, e que o testador continue passando no ramo mestre. Caso contrário, todos os novos pedidos de pull começarão a falhar nos testes, resultando em confusão e caos.
+  - *Explanation*: Se o conjunto de testes foi atualizado para uma mudança, isto deve ser feito primeiro.
 
-  - *Explanation*: If the test suite is to be updated for a change, this has to
-    be done first
-
-Wallet
+Carteira
 -------
 
-- Make sure that no crashes happen with run-time option `-disablewallet`.
+- Certifique-se de que nenhuma falha ocorra com a opção run-time `-disablewallet`.
 
-  - *Rationale*: In RPC code that conditionally uses the wallet (such as
-    `validateaddress`) it is easy to forget that global pointer `pwalletMain`
-    can be NULL. See `qa/rpc-tests/disablewallet.py` for functional tests
-    exercising the API with `-disablewallet`
+  - *Razão*: No código RPC que condicionalmente usa a carteira (como o `validateaddress`) é fácil esquecer que o ponteiro global `pwalletMain` pode ser NULL. Veja `qa/rpc-tests/disablewallet.py` para testes funcionais que exercem a API com`-disablewallet`
 
-- Include `db_cxx.h` (BerkeleyDB header) only when `ENABLE_WALLET` is set
+- Inclui `db_cxx.h` (cabeçalho BerkeleyDB) somente quando `ENABLE_WALLET` está ativo
 
-  - *Rationale*: Otherwise compilation of the disable-wallet build will fail in environments without BerkeleyDB
+  - *Razão*: Caso contrário a compilação disable-wallet irá falhar em ambientes sem BerkeleyDB
 
-General C++
+C++
 -------------
 
-- Assertions should not have side-effects
+- Asserções não devem ter efeitos colaterais
 
-  - *Rationale*: Even though the source code is set to to refuse to compile
-    with assertions disabled, having side-effects in assertions is unexpected and
-    makes the code harder to understand
+  - *Razão*: Embora o código fonte seja configurado para se recusar a compilar com asserções disabilitadas, ter efeitos colaterais nas asserções é inesperado e torna o código ainda mais difícil de ser entendido
 
-- If you use the `.h`, you must link the `.cpp`
+- Se você usar o `.h`, você deve veicular o `.cpp`
 
-  - *Rationale*: Include files define the interface for the code in implementation files. Including one but
-      not linking the other is confusing. Please avoid that. Moving functions from
-      the `.h` to the `.cpp` should not result in build errors
+  - *Razão*: Incluir arquivos definem a interface para o código nos arquivos de implementação. Incluir um mas não ligar o outro é confuso. Por favor evite isto. Mover funções do `.h` para `.cpp` não deve resultar em erros de compilação.
 
-- Use the RAII (Resource Acquisition Is Initialization) paradigm where possible. For example by using
-  `unique_ptr` for allocations in a function.
+- Use o paradigma RAII (Aquisição de Recursos na inicialização) quando possível. Por exemplo, usando `unique_ptr` para alocações em uma função.
 
-  - *Rationale*: This avoids memory and resource leaks, and ensures exception safety
+  - *Razão*: Isto evita a perda de memória e recursos, e garante segurança da exceção
 
-C++ data structures
+Estrutura de dados C++ 
 --------------------
 
-- Never use the `std::map []` syntax when reading from a map, but instead use `.find()`
+- Nunca use a sintaxe `std::map []` ao ler a partir de um mapa, ao invés use o `.find()`
 
-  - *Rationale*: `[]` does an insert (of the default element) if the item doesn't
-    exist in the map yet. This has resulted in memory leaks in the past, as well as
-    race conditions (expecting read-read behavior). Using `[]` is fine for *writing* to a map
+  - *Razão*: `[]` faz uma inserção (do elemento padrão) se o item ainda não existe em um mapa. Isto resultou em perda de memória no passado, assim como as condições de corrida (esperando um comportamento de leitura). Usar `[]` é bom para  *escrever* para um mapa
 
-- Do not compare an iterator from one data structure with an iterator of
-  another data structure (even if of the same type)
+- Não compare um interador de uma estrutura de dados com um interador de outra estrutura de dados (mesmo que sejam do mesmo tipo)
 
-  - *Rationale*: Behavior is undefined. In C++ parlor this means "may reformat
-    the universe", in practice this has resulted in at least one hard-to-debug crash bug
+  - *Razão*: O comportamento é indefinido. Em C++ isto significa "pode reformatar o universo", na prática isto resultou em pelo menos um erro difícil de depurar
 
-- Watch out for out-of-bounds vector access. `&vch[vch.size()]` is illegal,
-  including `&vch[0]` for an empty vector. Use `vch.data()` and `vch.data() +
-  vch.size()` instead.
+- Cuidado com excesso de acesso vetorial fora dos limites. `&vch[vch.size()]` é ilegal, incluindo `&vch[0]` para um vetor vazio. Use `vch.data()` e `vch.data() + vch.size()` em vez disso.
 
-- Vector bounds checking is only enabled in debug mode. Do not rely on it
+- A verificação dos limites de vetores só é ativada no modo de depuração. Não confie nisso
 
-- Make sure that constructors initialize all fields. If this is skipped for a
-  good reason (i.e., optimization on the critical path), add an explicit
-  comment about this
+- Verifique se os construtores inicializam todos os campos. Se isto é ignorado por uma boa razão (i.e., otimização no caominho crítico), adicione um comentário explícito sobre isto
 
-  - *Rationale*: Ensure determinism by avoiding accidental use of uninitialized
-    values. Also, static analyzers balk about this.
+  - *Razão*: Assegurar o determinismo evitando o uso acidental de valores não inicializados. Além disso, os analisadores estáticos se recusam a isso.
 
-- Use explicitly signed or unsigned `char`s, or even better `uint8_t` and
-  `int8_t`. Do not use bare `char` unless it is to pass to a third-party API.
-  This type can be signed or unsigned depending on the architecture, which can
-  lead to interoperability problems or dangerous conditions such as
-  out-of-bounds array accesses
+- Use `char`s, ou ainda `uint8_t` e  `int8_t` específicos assinados ou não. Não use `char` ao menos que seja para passar para um API de terceiros. Este tipo pode ser assinado ou não dependendo da arquitetura, que pode levar a problemas de interoperabilidade ou condições perigosas, como acessos de matriz fora dos limites
 
-- Prefer explicit constructions over implicit ones that rely on 'magical' C++ behavior
+- Prefira construções explícitas ao invés de implícitas que dependem do comportamento 'mágico' do C++
 
-  - *Rationale*: Easier to understand what is happening, thus easier to spot mistakes, even for those
-  that are not language lawyers
+  - *Razão*: Mais fácil de entender o que está acontecendo, mais fácil detectar erros, até para aqueles que tem um pouco mais de dificuldade
 
-Strings and formatting
+Strings e formatação
 ------------------------
 
-- Be careful of `LogPrint` versus `LogPrintf`. `LogPrint` takes a `category` argument, `LogPrintf` does not.
+- Cuidado com `LogPrint` versus `LogPrintf`. `LogPrint` toma um argumento `category`, `LogPrintf` não.
 
-  - *Rationale*: Confusion of these can result in runtime exceptions due to
-    formatting mismatch, and it is easy to get wrong because of subtly similar naming
+  - *Razão*: A confusão destes pode resultar em exceções de runtime devido à incompatibilidade de formatação, e é mais fácil de errar por causa de nomes sutilmente semelhantes
 
-- Use `std::string`, avoid C string manipulation functions
+- Use `std::string`, evitando as funções de manipulação de sequência C
 
-  - *Rationale*: C++ string handling is marginally safer, less scope for
-    buffer overflows and surprises with `\0` characters. Also some C string manipulations
-    tend to act differently depending on platform, or even the user locale
+  - *Razão*: A sequência de caracteres C++ geralmente é pouco segura, menor alcance para buffer overflows e surpresas com caracteres `\0` . Além disso, algumas manipulações de sequência C tendem a atuar de forma diferente dependendo da plataforma ou até da localização do usuário
 
-- Use `ParseInt32`, `ParseInt64`, `ParseUInt32`, `ParseUInt64`, `ParseDouble` from `utilstrencodings.h` for number parsing
+- Use `ParseInt32`, `ParseInt64`, `ParseUInt32`, `ParseUInt64`, `ParseDouble` do `utilstrencodings.h` para análise de número
 
-  - *Rationale*: These functions do overflow checking, and avoid pesky locale issues
+  - *Razão*: Estas funções fazem a verificação do overflow, e evitam problemas locais que incomodam
 
-- For `strprintf`, `LogPrint`, `LogPrintf` formatting characters don't need size specifiers
+- Para `strprintf`, `LogPrint`, `LogPrintf` a formatação de caracteres não precisa de tamanho específico
 
-  - *Rationale*: Criptoreal Core uses tinyformat, which is type safe. Leave them out to avoid confusion
+  - *Razão*: Criptoreal Core usa tinyformat, Que é um tipo seguro. Deixe-as de fora para evitar confusão
 
-Variable names
+Nomes variáveis
 --------------
 
-The shadowing warning (`-Wshadow`) is enabled by default. It prevents issues rising
-from using a different variable with the same name.
+O aviso de sombreamento (`-Wshadow`) está ativado por padrão. Ele evita que problemas surjam ao usar uma variável diferente com o mesmo nome.
 
-Please name variables so that their names do not shadow variables defined in the source code.
+Por favor nomeie variáveis para que seus nomes não obstruam as variáveis definidas em código fonte.
 
-E.g. in member initializers, prepend `_` to the argument name shadowing the
-member name:
+Por exemplo, nos inicializadores dos membros, prefira o `_` para o nome do argumento, que acompanha o nome do membro:
 
 ```c++
 class AddressBookPage
@@ -336,20 +296,14 @@ AddressBookPage::AddressBookPage(Mode _mode) :
 ...
 ```
 
-When using nested cycles, do not name the inner cycle variable the same as in
-upper cycle etc.
+Ao usar ciclos aninhados, não nomeie a variável do ciclo interno igual ao do ciclo superior, etc.
 
-
-Threads and synchronization
+Tópicos e sincronização
 ----------------------------
 
-- Build and run tests with `-DDEBUG_LOCKORDER` to verify that no potential
-  deadlocks are introduced. As of 0.12, this is defined by default when
-  configuring with `--enable-debug`
+- Compile e execute testes com `-DDEBUG_LOCKORDER` para verificar que nenhum deadlock foi introduzido. A partir da 0.12, isto é definido por padrão ao configurar com `--enable-debug`
 
-- When using `LOCK`/`TRY_LOCK` be aware that the lock exists in the context of
-  the current scope, so surround the statement and the code that needs the lock
-  with braces
+- Ao usar `LOCK`/`TRY_LOCK` esteja ciente de que o bloqueio existe no contexto do escopo atual, então execute a instrução e o código que precisa do bloqueio com chaves
 
   OK:
 
@@ -360,7 +314,7 @@ Threads and synchronization
 }
 ```
 
-  Wrong:
+  Errado:
 
 ```c++
 TRY_LOCK(cs_vNodes, lockNodes);
@@ -369,103 +323,84 @@ TRY_LOCK(cs_vNodes, lockNodes);
 }
 ```
 
-Source code organization
+Organização do código fonte
 --------------------------
 
-- Implementation code should go into the `.cpp` file and not the `.h`, unless necessary due to template usage or
-  when performance due to inlining is critical
+- O código de implementação deve entrar no arquivo `.cpp` e não no `.h`, a menos que seja necessário devido ao uso de um modelo ou quando o desempenho devido ao lançamento for crítico
 
-  - *Rationale*: Shorter and simpler header files are easier to read, and reduce compile time
+  - *Razão*: Arquivos de cabeçalho menores e mais simples são mais fáceis de ler e reduzem o tempo de compilação
 
-- Don't import anything into the global namespace (`using namespace ...`). Use
-  fully specified types such as `std::string`.
+- Não importe nada no namespace global (`using namespace ...`). Use tipos totalmente especificados, como `std::string`.
 
-  - *Rationale*: Avoids symbol conflicts
+  - *Razão*: Evita conflitos de símbolos
 
 GUI
 -----
 
-- Do not display or manipulate dialogs in model code (classes `*Model`)
+- Não exiba ou manipule diálogos no modelo de código (classes `*Model`)
 
-  - *Rationale*: Model classes pass through events and data from the core, they
-    should not interact with the user. That's where View classes come in. The converse also
-    holds: try to not directly access core data structures from Views.
+  - *Razão*: As classes de modelo passam por eventos e dados do núcleo, elas não devem interagir como usuário. Assim que entram as classes View. O inverso também acontece: tente não acessar diretamente as estruturas de dados das Views.
 
 Subtrees
 ----------
 
-Several parts of the repository are subtrees of software maintained elsewhere.
+Várias partes do repositório são subtrees do software mantidos em outros lugares.
 
-Some of these are maintained by active developers of Criptoreal Core, in which case changes should probably go
-directly upstream without being PRed directly against the project.  They will be merged back in the next
-subtree merge.
+Alguns deles são mantidos por desenvolvedores ativos do Criptoreal Core, e neste caso, mudanças devem ir diretamente para cima sem PRed diretamente contra o projeto. Eles serão mesclados de volta na próxima subtree.
 
-Others are external projects without a tight relationship with our project.  Changes to these should also
-be sent upstream but bugfixes may also be prudent to PR against Criptoreal Core so that they can be integrated
-quickly.  Cosmetic changes should be purely taken upstream.
+Outros são projetos externos sem um relacionamento próximo com nosso projeto. Mudanças também devem ser enviadas mas as correções de bug também podem ser prudentes para PR contra a Criptoreal Core, para que possam ser integradas rapidamente.  Mudanças cosméticas devem apenas ser enviadas.
 
-There is a tool in contrib/devtools/git-subtree-check.sh to check a subtree directory for consistency with
-its upstream repository.
+Existe uma ferramenta em contrib/devtools/git-subtree-check.sh para verificar um diretório de subtree para consistência com seu repositório.
 
-Current subtrees include:
+As subtrees atuais incluem:
 
 - src/leveldb
-  - Upstream at https://github.com/google/leveldb ; Maintained by Google, but open important PRs to Core to avoid delay
+  - Upstream em https://github.com/google/leveldb ; Mantido pelo Google, mas abre PRs importantes para o Core evitar atrasos
 
 - src/libsecp256k1
-  - Upstream at https://github.com/bitcoin-core/secp256k1/ ; actively maintaned by Core contributors.
+  - Upstream em https://github.com/bitcoin-core/secp256k1/ ; ativamente mantida pelos colaboradores principais.
 
 - src/crypto/ctaes
-  - Upstream at https://github.com/bitcoin-core/ctaes ; actively maintained by Core contributors.
+  - Upstream em https://github.com/bitcoin-core/ctaes ; ativamente mantida pelos colaboradores principais
 
 - src/univalue
-  - Upstream at https://github.com/jgarzik/univalue ; report important PRs to Core to avoid delay.
+  - Upstream em https://github.com/jgarzik/univalue ; relata PRs importantes para evitar atrasos.
 
 
-Git and GitHub tips
+Dicas Git and GitHub
 ---------------------
 
-- For resolving merge/rebase conflicts, it can be useful to enable diff3 style using
-  `git config merge.conflictstyle diff3`. Instead of
+- Para resolver conflitos de mesclagem/rebase, pode ser útil habilitar o estilo diff3 usando `git config merge.conflictstyle diff3`. 
+Ao invés de
 
         <<<
-        yours
+        seu
         ===
-        theirs
+        deles
         >>>
 
-  you will see
+  você vai ver
 
         <<<
-        yours
+       seu
         |||
         original
         ===
-        theirs
+        deles
         >>>
 
-  This may make it much clearer what caused the conflict. In this style, you can often just look
-  at what changed between *original* and *theirs*, and mechanically apply that to *yours* (or the other way around).
+ Isto pode tornar mais claro o que causou o conflito. Neste estilo, muitas vezes você só pode ver o que mudou entro *original* e *deles*, e aplicar mecanicamente para *seu* (ou vice-versa).
 
-- When reviewing patches which change indentation in C++ files, use `git diff -w` and `git show -w`. This makes
-  the diff algorithm ignore whitespace changes. This feature is also available on github.com, by adding `?w=1`
-  at the end of any URL which shows a diff.
+- Ao revisar os patches que alteram o recuo nos arquivos C++, use `git diff -w` e `git show -w`. Isto faz com que o algoritmo diff ignore mudanças em espaços em branco. Este recurso também está disponível no github.com, adicionando `?w=1`  no final de qualquer URL que mostre uma diff.
 
-- When reviewing patches that change symbol names in many places, use `git diff --word-diff`. This will instead
-  of showing the patch as deleted/added *lines*, show deleted/added *words*.
+- Ao revisar os patches que mudam os nomes dos símbolos em muitos lugares, use `git diff --word-diff`. Isto irá em vez de mostrar o patch como *linhas* excluídas/adicionadas, mostra as *palavras* deletadas/adicionadas.
 
-- When reviewing patches that move code around, try using
-  `git diff --patience commit~:old/file.cpp commit:new/file/name.cpp`, and ignoring everything except the
-  moved body of code which should show up as neither `+` or `-` lines. In case it was not a pure move, this may
-  even work when combined with the `-w` or `--word-diff` options described above.
+- Ao revisar os patches que movem o código, tente usar `git diff --patience commit~:old/file.cpp commit:new/file/name.cpp`, e ignorando tudo, exceto o corpo de código movido, que deve aparecer com nenhuma linha `+` ou `-`. No caso de não ser um movimento puro, isto pode até funcionar quando combinado com as opções `-w` ou `--word-diff` descritas acima.
 
-- When looking at other's pull requests, it may make sense to add the following section to your `.git/config`
-  file:
+- Ao olhar para as pull requests de outros, pode fazer sentido adicionar a seguinte seção ao seu arquivo `.git/config`:
 
         [remote "upstream-pull"]
                 fetch = +refs/pull/*:refs/remotes/upstream-pull/*
                 url = git@github.com:criptoreal/criptoreal.git
 
-  This will add an `upstream-pull` remote to your git repository, which can be fetched using `git fetch --all`
-  or `git fetch upstream-pull`. Afterwards, you can use `upstream-pull/NUMBER/head` in arguments to `git show`,
-  `git checkout` and anywhere a commit id would be acceptable to see the changes from pull request NUMBER.
+Isto irá adicionar um `upstream-pull` remoto ao seu repositório git, que pode ser obtido usando `git fetch --all` ou `git fetch upstream-pull`. Posteriormente, você pode usar `upstream-pull/NUMBER/head` em argumentos `git show`, `git checkout` e em qualquer lugar um id de confirmação seria aceitável para ver as alterações do NUMBER do pull request.
