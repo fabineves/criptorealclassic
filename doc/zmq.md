@@ -1,106 +1,59 @@
-# Block and Transaction Broadcasting with ZeroMQ
+# Transmissão de Blocos e Transações com ZeroMQ
 
-[ZeroMQ](http://zeromq.org/) is a lightweight wrapper around TCP
-connections, inter-process communication, and shared-memory,
-providing various message-oriented semantics such as publish/subscribe,
-request/reply, and push/pull.
+[ZeroMQ](http://zeromq.org/) é um ivólucro em torno de conexões TCP, comunicação entre processos, e memória compartilhada, fornecendo várias semânticas orientadas para mensagens como publicar/assinar, requerer/responder, e push/pull.
 
-The Criptoreal Core daemon can be configured to act as a trusted "border
-router", implementing the criptoreal wire protocol and relay, making
-consensus decisions, maintaining the local blockchain database,
-broadcasting locally generated transactions into the network, and
-providing a queryable RPC interface to interact on a polled basis for
-requesting blockchain related data. However, there exists only a
-limited service to notify external software of events like the arrival
-of new blocks or transactions.
+O daemon do Criptoreal Core pode ser configurado para atuar como um "roteador de borda" confiável, implementando o protocolo do criptoreal, tomando decisões de consenso, mantendo o local do banco de dados da blockchain, transmitindo transações geradas localmente para a rede, e fornecendo uma interface RPC questionável para interagirem uma base de pesquisa para solicitar dados relacionados a blockchain. Entretanto, existe apenas um serviço limitado para notificar software externo sobre eventos como a chegada de novos blocos ou transações.
 
-The ZeroMQ facility implements a notification interface through a set
-of specific notifiers. Currently there are notifiers that publish
-blocks and transactions. This read-only facility requires only the
-connection of a corresponding ZeroMQ subscriber port in receiving
-software; it is not authenticated nor is there any two-way protocol
-involvement. Therefore, subscribers should validate the received data
-since it may be out of date, incomplete or even invalid.
+A instalação do ZeroMQ implementa uma interface de notificação através de um conjunto de notificadores específicos. Atualmente, existem notificadores que publicam blocos e transações. Esta facilidade que é somente leitura requer apenas a conexão de uma porta ZeroMQ correspondente na recepção do software; não é autenticado nem há envolvimento de protocolo bidirecional. Portanto, assinantes devem validar os dados recebidos pois estes podem estar desatualizados, incompletos e até inválidos.
 
-ZeroMQ sockets are self-connecting and self-healing; that is,
-connections made between two endpoints will be automatically restored
-after an outage, and either end may be freely started or stopped in
-any order.
+Os soquetes do ZeroMQ são auto-conectados; ou seja, conexões feitas entre dois pontos serão automaticamente restauradas após uma interrupção, e qualquer extremidade pode ser livremente iniciada ou interrompida em qualquer ordem.
 
-Because ZeroMQ is message oriented, subscribers receive transactions
-and blocks all-at-once and do not need to implement any sort of
-buffering or reassembly.
+Como o ZeroMQ é orientado para mensagens, os assinantes recebem transações e bloqueiam tudo de uma vez e não há necessidade de implementar qualquer tipo de armazenamento ou remodelação.
 
-## Prerequisites
+## Pré-requisitos
 
-The ZeroMQ feature in Criptoreal Core requires ZeroMQ API version 4.x or
-newer. Typically, it is packaged by distributions as something like
-*libzmq3-dev*. The C++ wrapper for ZeroMQ is *not* needed.
+O recurso ZeroMQ no Criptoreal Core requer a API ZeroMQ versão 4.x ou mais recente. Normalmente, é distribuído em distribuições como *libzmq3-dev*. The wrapper do C++ para o ZeroMQ  *não* é necessário.
 
-In order to run the example Python client scripts in contrib/ one must
-also install *python3-zmq*, though this is not necessary for daemon
-operation.
+Para executar o exemplo de scripts do cliente Python em contrib/ deve instalar também *python3-zmq*, embora isso não seja necessário para a operação daemon.
 
-## Enabling
+## Habilitando
 
-By default, the ZeroMQ feature is automatically compiled in if the
-necessary prerequisites are found.  To disable, use --disable-zmq
-during the *configure* step of building criptoreald:
+Por padrão, o recurso ZeroMQ é compilado automaticamente se os pré-requisitos necessários forem encontrados. Para desabilitar, use --disable-zmq durante a etapa de *configuração* da compilação do criptoreal:
 
-    $ ./configure --disable-zmq (other options)
+    $ ./configure --disable-zmq (outras opções)
 
-To actually enable operation, one must set the appropriate options on
-the command line or in the configuration file.
+Para ativar esta operação, é preciso definir as opções apropriadas na linha de comando ou no arquivo de configuração.
 
-## Usage
+## Uso
 
-Currently, the following notifications are supported:
+Atualmente, as seguintes notificações são suportadas:
 
     -zmqpubhashtx=address
     -zmqpubhashblock=address
     -zmqpubrawblock=address
     -zmqpubrawtx=address
 
-The socket type is PUB and the address must be a valid ZeroMQ socket
-address. The same address can be used in more than one notification.
+O tipo de soquete é PUB e o endereço deve ser um endereço de soquete ZeroMQ válido. O mesmo endereço pode ser usado em mais de uma notificação.
 
-For instance:
+Por Exemplo:
 
     $ criptoreald -zmqpubhashtx=tcp://127.0.0.1:25527 \
                -zmqpubrawtx=ipc:///tmp/criptoreald.tx.raw
 
-Each PUB notification has a topic and body, where the header
-corresponds to the notification type. For instance, for the
-notification `-zmqpubhashtx` the topic is `hashtx` (no null
-terminator) and the body is the hexadecimal transaction hash (32
-bytes).
+Cada notificação PUB tem um tópico e um corpo, onde o cabeçalho corresponde ao tipo de notificação. Por exemplo, para a notificação `-zmqpubhashtx` o tópico é `hashtx` (sem terminador nulo) e o corpo é o hash de transação hexadecimal (32 bytes).
 
-These options can also be provided in criptoreal.conf.
+Estas opções também podem ser fornecidas no criptoreal.conf.
 
-ZeroMQ endpoint specifiers for TCP (and others) are documented in the
-[ZeroMQ API](http://api.zeromq.org/4-0:_start).
+Os especificadores de ponto de extremidade ZeroMQ para TCP (e outros) estão documentados em [ZeroMQ API](http://api.zeromq.org/4-0:_start).
 
-Client side, then, the ZeroMQ subscriber socket must have the
-ZMQ_SUBSCRIBE option set to one or either of these prefixes (for
-instance, just `hash`); without doing so will result in no messages
-arriving. Please see `contrib/zmq/zmq_sub.py` for a working example.
+O client, então, o soquete do assinante ZeroMQ deve ter a opção ZMQ_SUBSCRIBE definida para um ou qualquer destes prefixos (por exemplo, apenas `hash`); sem fazê-lo, fará com que nenhuma mensagem chegue. Veja `contrib/zmq/zmq_sub.py` para ver um exemplo funcional.
 
-## Remarks
+## Observações
 
-From the perspective of criptoreald, the ZeroMQ socket is write-only; PUB
-sockets don't even have a read function. Thus, there is no state
-introduced into criptoreald directly. Furthermore, no information is
-broadcast that wasn't already received from the public P2P network.
+Do ponto de vista do criptoreal, o soquete ZeroMQ é apenas de gravação; soquetes PUB sequer tem função de leitura. Assim, não há nenhum estado introduzido diretamente no criptoreal. Além disso, nenhuma informação é transmitida que não tenha sido recebida da rede pública P2P.
 
-No authentication or authorization is done on connecting clients; it
-is assumed that the ZeroMQ port is exposed only to trusted entities,
-using other means such as firewalling.
+Nenhuma autenticação ou autorização é feita na conexão de clientes; assume-se que a porta ZeroMQ é exposta somente para entidades confiáveis, usando outros meios como firewall.
 
-Note that when the block chain tip changes, a reorganisation may occur
-and just the tip will be notified. It is up to the subscriber to
-retrieve the chain from the last known block to the new tip.
+Observe que quando a ponta da blockchain muda, pode ocorrer uma reorganização e apenas a tip será notificada. Cabe ao assinante recuperar a cadeia do último bloco conhecido para a nova tip.
 
-There are several possibilities that ZMQ notification can get lost
-during transmission depending on the communication type your are
-using. Criptoreald appends an up-counting sequence number to each
-notification which allows listeners to detect lost notifications.
+Existem várias possibilidades onde a notificação do ZMQ pode se perder durante a transmissão dependendo do tipo de comunicação que você está usando. Criptoreal anexa um número de sequência de contagem para cada notificação que permite aos ouvintes detectar notificações perdidas. 
