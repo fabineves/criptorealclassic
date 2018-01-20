@@ -1,14 +1,12 @@
-Fuzz-testing Criptoreal Core
+Criptoreal Core Fuzz-testing
 ==========================
 
-A special test harness `test_criptoreal_fuzzy` is provided to provide an easy
-entry point for fuzzers and the like. In this document we'll describe how to
-use it with AFL.
+Um teste especial `test_criptoreal_fuzzy` é fornecido para trazer um ponto de entrada fácil para fuzzers e similares. Neste documento descrevemos como utilizá-lo com AFL.
 
-Building AFL
+Compilando AFL
 -------------
 
-It is recommended to always use the latest version of afl:
+É recomendado utilizar somente a última versão da afl:
 ```
 wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
 tar -zxvf afl-latest.tgz
@@ -17,27 +15,22 @@ make
 export AFLPATH=$PWD
 ```
 
-Instrumentation
+Instrumentação
 ----------------
 
-To build Criptoreal Core using AFL instrumentation (this assumes that the
-`AFLPATH` was set as above):
+Para compilar o Criptoreal Core usando instrumentação AFL (isto pressupõe que o `AFLPATH` foi configurado como mostrado acima):
 ```
 ./configure --disable-ccache --disable-shared --enable-tests CC=${AFLPATH}/afl-gcc CXX=${AFLPATH}/afl-g++
 export AFL_HARDEN=1
 cd src/
 make test/test_criptoreal_fuzzy
 ```
-We disable ccache because we don't want to pollute the ccache with instrumented
-objects, and similarly don't want to use non-instrumented cached objects linked
-in.
+Desativamos o ccache porque não queremos poluir o ccache com objetos instrumentados, e da mesma forma não queremos usar objetos em cache não instrumentados ligados.
 
-Preparing fuzzing
+Preparando o fuzzing
 ------------------
 
-AFL needs an input directory with examples, and an output directory where it
-will place examples that it found. These can be anywhere in the file system,
-we'll define environment variables to make it easy to reference them.
+A AFL precisa de um diretório de entrada com exemplos, e um diretório de saída onde irá colocar exemplos que foram encontrados. Estes podem estar em qualquer lugar no sistema de arquivos, nós iremos definir variáveis de ambiente para facilitar a referência.
 
 ```
 mkdir inputs
@@ -46,21 +39,19 @@ mkdir outputs
 AFLOUT=$PWD/outputs
 ```
 
-Example inputs are available from:
+Entradas de exemplo estão disponíveis em:
 
 - https://download.visucore.com/bitcoin/bitcoin_fuzzy_in.tar.xz
 - http://strateman.ninja/fuzzing.tar.xz
 
-Extract these (or other starting inputs) into the `inputs` directory before starting fuzzing.
+Extraia estas (ou outras entradas de partida) no diretório de `inputs` antes de iniciar o fuzzing.
 
 Fuzzing
 --------
 
-To start the actual fuzzing use:
+Para iniciar o fuzzing atual use:
 ```
 $AFLPATH/afl-fuzz -i ${AFLIN} -o ${AFLOUT} -m52 -- test/test_criptoreal_fuzzy
 ```
 
-You may have to change a few kernel parameters to test optimally - `afl-fuzz`
-will print an error and suggestion if so.
-
+Você pode precisar alterar alguns parâmetros do kernel para testar otimamente - `afl-fuzz`irá informar um erro e sugestão se assim for
