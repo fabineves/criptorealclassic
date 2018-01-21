@@ -1,88 +1,82 @@
-Translation Strings Policy
+Política de tradução de strings
 ===========================
 
-This document provides guidelines for internationalization of the Bitcoin Core software.
+Este documento fornece diretrizes para a internacionalização do software Bitcoin Core.
 
-How to translate?
+Como traduzir?
 ------------------
 
-To mark a message as translatable
+Para marcar uma mensagem como traduzível
 
-- In GUI source code (under `src/qt`): use `tr("...")`
+- No código fonte GUI (sob `src/qt`): use `tr("...")`
 
-- In non-GUI source code (under `src`): use `_("...")`
+- No código fonte não GUI (sob `src`): use `_("...")`
 
-No internationalization is used for e.g. developer scripts outside `src`.
+Nenhuma internacionalização é usada para scripts de desenvolvedor fora do `src`.
 
-Strings to be translated
+Strings para serem traduzidas
 -------------------------
 
-On a high level, these strings are to be translated:
+Em um nível alto, estas strings devem ser traduzidas:
 
-- GUI strings, anything that appears in a dialog or window
+- Strings GUI, qualquer coisa que apareça em uma janela ou caixa de diálogo
 
-- Command-line option documentation
+- Documentação da opção da linha de comando
 
-### GUI strings
+### Strings GUI
 
-Anything that appears to the user in the GUI is to be translated. This includes labels, menu items, button texts, tooltips and window titles.
-This includes messages passed to the GUI through the UI interface through `InitMessage`, `ThreadSafeMessageBox` or `ShowProgress`.
+Qualquer coisa que apareça para o usuário na GUI deve ser traduzida. Isto inclui rótulos, itens do menu, textos dos botões, dicas de ferramentas e títulos de janelas. Isto inclui mensagens transmitidas para a GUI através da interface UI através de `InitMessage`, `ThreadSafeMessageBox` ou `ShowProgress`.
 
-### Command-line options
+### Opções de linha de comando
 
-Documentation for the command line options in the output of `--help` should be translated as well.
+A documentação para as opções de linha de comando na saída de `--help` também deve ser traduzida.
 
-Make sure that default values do not end up in the string, but use string formatting like `strprintf(_("Threshold for disconnecting misbehaving peers (default: %u)"), 100)`. Putting default values in strings has led to accidental translations in the past, and forces the string to be retranslated every time the value changes.
+Certifique-se de que os valores padrão não terminam na string, mas use a formatação da string como `strprintf(_("Limite para desconectar peers com mal comportamento (default: %u)"), 100)`. Colocar valores padrão nas strings resultou em traduções acidentais no passado, e força a string a ser retransmitida sempre que o valor muda.
 
-Do not translate messages that are only shown to developers, such as those that only appear when `--help-debug` is used.
+Não traduza mensagens que são mostrada somente para os desenvolvedores, como aquelas que aparecem apenas quando `--help-debug` é usado.
 
-General recommendations
+Recomendações Gerais
 ------------------------
 
-### Avoid unnecessary translation strings
+### Evite traduções desnecessárias de strings
 
-Try not to burden translators with translating messages that are e.g. slight variations of other messages.
-In the GUI, avoid the use of text where an icon or symbol will do.
-Make sure that placeholder texts in forms don't end up in the list of strings to be translated (use `<string notr="true">`).
+Tente não sobrecarregar os tradutores com traduções de mensagens que são, por exemplo, pequenas variações de outras mensagens. Na GUI, evite o uso de texto onde pode ser usado um ícone ou símbolo. Verifique se o texto dos formulários não termina na lista de strings a serem traduzidas (use `<string notr="true">`).
 
-### Make translated strings understandable
+### Faça com que as strings traduzidas sejam compreensíveis
 
-Try to write translation strings in an understandable way, for both the user and the translator. Avoid overly technical or detailed messages
+Tente escrever as strings de uma forma compreensível, tanto para o usuário quanto para o tradutor. Evite mensagens excessivamente técnicas ou detalhadas
 
-### Do not translate internal errors
+### Não traduza erros internos
 
-Do not translate internal errors, or log messages, or messages that appear on the RPC interface. If an error is to be shown to the user,
-use a translatable generic message, then log the detailed message to the log. E.g. "A fatal internal error occurred, see debug.log for details".
-This helps troubleshooting; if the error is the same for everyone, the likelihood is increased that it can be found using a search engine.
+Não faça a tradução de erros internos, mensagens de log, ou mensagens que aparecem na interface RPC. Se um erro for mostrado ao usuário, use uma mensagem genérica que seja traduzível, então registre a mensagem detalhada no log. Por exemplo: Ocorreu um erro interno, veja debug.log para detalhes". Isto ajuda na resolução de problemas, se o erro for o mesmo para todos, a probabilidade é aumentada caso possa ser encontrada utilizando um mecanismo de pesquisa.
 
-### Avoid fragments
+### Evite fragmentos
 
-Avoid dividing up a message into fragments. Translators see every string separately, so may misunderstand the context if the messages are not self-contained.
+Evite dividir uma mensagem em fragmentos. Os tradutores vêem cada string separadamente, por isso mal entendemos o contexto se as mensagens não forem autônomas.
 
-### Avoid HTML in translation strings
+### Evite o HTML nas strings traduzidas
 
-There have been difficulties with use of HTML in translation strings; translators should not be able to accidentally affect the formatting of messages.
-This may sometimes be at conflict with the recommendation in the previous section.
+Houve dificuldades com o uso de HTML ao traduzir strings; tradutores não podem afetar acidentalmente a formatação de mensagens. Isto às vezes pode estar em conflito com a recomendação anterior.
 
-### Plurals
+### Plurais
 
-Plurals can be complex in some languages. A quote from the gettext documentation:
+Os plurais podem ser complexos em algumas línguas. Uma citação da documentação do gettext:
 
-    In Polish we use e.g. plik (file) this way:
+    Em polonês usamos e.g. plik (arquivo) desta forma:
     1 plik,
     2,3,4 pliki,
     5-21 pliko'w,
     22-24 pliki,
     25-31 pliko'w
-    and so on
+    e por aí vai
 
-In Qt code use tr's third argument for optional plurality. For example:
+No código Qt use o terceiro argumento do tr para a pluralidade opcional. Por exemplo:
 
     tr("%n hour(s)","",secs/HOUR_IN_SECONDS);
     tr("%n day(s)","",secs/DAY_IN_SECONDS);
     tr("%n week(s)","",secs/WEEK_IN_SECONDS);
 
-This adds `<numerusform>`s to the respective `.ts` file, which can be translated separately depending on the language. In English, this is simply:
+Isto adciona `<numerusform>` no respectivo arquivo `.ts`, que pode ser traduzido separadamente dependendo do idioma. Em inglês, isto é simples:
 
     <message numerus="yes">
         <source>%n active connection(s) to Bitcoin network</source>
@@ -92,18 +86,18 @@ This adds `<numerusform>`s to the respective `.ts` file, which can be translated
         </translation>
     </message>
 
-Where it is possible try to avoid embedding numbers into the flow of the string at all. e.g.
+Onde for possível, tente evitar a incorporação de números no fluxo da string. Por exemplo:
 
-    WARNING: check your network connection, %d blocks received in the last %d hours (%d expected)
+    ATENÇÃO: verifique sua conexão, %d blocos recebidos nas últimas %d horas (%d esperados)
 
 versus
 
-    WARNING: check your network connection, less blocks (%d) were received in the last %n hours than expected (%d).
+    ATENÇÃO: verifique sua conexão, menos blocos (%d) foram recebidos nas últimas %n horas do que o esperado (%d).
 
-The second example reduces the number of pluralized words that translators have to handle from three to one, at no cost to comprehensibility of the sentence.
+O segundo exemplo reduz o número de palavras pluralizadas que os tradutores têm de lidar de três para um, sem nenhum custo para a compreensã da sentença.
 
-### String freezes
+### Congelamento de strings
 
-During a string freeze (often before a major release), no translation strings are to be added, modified or removed.
+Durante um congelamento de strings (muitas vezes antes de um grande lançamento), nenhuma tradução de string deve ser adicionada, modificada ou removida.
 
-This can be checked by executing `make translate` in the `src` directory, then verifying that `bitcoin_en.ts` remains unchanged.
+Isto pode ser verificado executando `make translate` no diretório `src`, depeois verificando que `bitcoin_en.ts` continua inalterado.
