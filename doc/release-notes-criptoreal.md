@@ -1,98 +1,71 @@
-Criptoreal Core version 0.14.2 is now available from:
+O Criptoreal Core versão 0.14.2 está disponível em:
 
   <https://criptoreal.org/>
 
-This is a new major version release, including new features, various bugfixes
-and performance improvements, as well as updated translations.
+Esta é uma nova versão, incluindo novos recursos, várias correções de bugs e melhorias de desempenho, assim como traduções atualizadas.
 
-Please report bugs using the issue tracker at github:
+Por favor, reporte bugs usando o issue tracker do github:
 
   <https://github.com/criptoreal/criptoreal/issues>
 
-Compatibility
+Compatibilidade
 ==============
 
-Criptoreal Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.8+, and Windows Vista and later.
+Criptoreal Core é amplamente testado em vários sistemas operacionais usando o kernel do Linux, macOS 10.8+, Windows Vista e posterior.
 
-Microsoft ended support for Windows XP on [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support),
-No attempt is made to prevent installing or running the software on Windows XP, you
-can still do so at your own risk but be aware that there are known instabilities and issues.
-Please do not report issues about Windows XP to the issue tracker.
+A Microsoft encerrou o suporte para Windows XP em [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), nenhuma tentativa é feita para evitar a instalação ou a execução do software no Windows XP, você ainda pode faz^-lo por sua conta e risco mas fique ciente que existem instabilidades e problemas já conhecidos. Por favor não reporte problemas com o Windows XP no  issue tracker.
 
-Criptoreal Core should also work on most other Unix-like systems but is not
-frequently tested on them.
+Criptoreal Core também deve funcionar na maioria dos sistemas semelhantes ao Unix, mas estes não são frequentemente testados.
 
-Notable changes
-===============
+Mudanças notáveis
+=================
 
-New Multisig Address Prefix
----------------------------
+Novo prefixo de endereço Multisig
+---------------------------------
 
-Criptoreal Core now supports P2SH addresses beginning with P on mainnet and p on testnet.
-P2SH addresses beginning with 3 on mainnet and m or n on testnet will continue to be valid.
-Old and new addresses can be used interchangeably.
+O Criptoreal Core agora suporta endereços P2SH começando com P na mainnet e com p na testnet. Endereços P2SH começando com 3 no mainnet e m ou n no testnet continuarão a ser válidos. Os endereços antigos e novos podem ser usados de forma intercambiável.
 
 miniupnp CVE-2018-8798
 ----------------------
 
-Bundled miniupnpc was updated to 2.0.20170509. This fixes an integer signedness error (present in MiniUPnPc v1.4.20101221 through v2.0) that allows remote attackers (within the LAN) to cause a denial of service or possibly have unspecified other impact.
+O  miniupnpc foi atualizado para 2.0.20170509. Isto corrige um erro de assinatura (presente no MiniUPnPc v1.4.20101221 até v2.0) que permite ataques remotos (dentro da LAN) que causam um "denial of service" ou outro impacto não especificado.
 
-This only affects users that have explicitly enabled UPnP through the GUI setting or through the -upnp option, as since the last UPnP vulnerability (in Criptoreal Core 0.10.4) it has been disabled by default.
+Isto afeta apenas usuários que habilitaram explicitamente o UPnP através da configuração da GUI ou através da opção -upnp , já que a última vulnerabilidade UPnP (no Criptoreal Core 0.10.4) foi desabilitada por padrão.
 
-If you use this option, it is recommended to upgrade to this version as soon as possible.
+Se você usar esta opção, é recomendado fazer o upgrade para esta versão o quanto antes.
 
-Reset Testnet
+Resetar Testnet
 -------------
 
-Testnet3 has been deprecated and replaced with Testnet4. The server port has been changed to 15526 however the RPC port remains
-the same (15527).
+Testnet3 foi descontinuado e substituído pelo Testnet4. A porta do servidor foi alterada para 15526 entretanto a porta RPC permanece a mesma (15527).
 
-Developers who require the new testnet blockchain paramaters can find them [here](https://github.com/criptoreal/criptoreal/blob/master-0.14/src/chainparams.cpp#L220).
+Desenvolvedores que exigem os novos parâmetros da blockchain podem encontrá-los [aqui](https://github.com/criptoreal/criptoreal/blob/master-0.14/src/chainparams.cpp#L220).
 
-Performance Improvements
+Melhorias de performance
+------------------------
+
+A velocidade de validação e o desempenho da propagação da rede melhoraram bastante, levando a redução do tempo de download de sincronização e bloqueio.
+
+- O script de cache da assinatura foi reimplementado como "cuckoo cache", permitindo que mais assinaturas sejam pesquisadas em cache de maneira mais rápida.
+- Foram introduzidos blocos válidos que permitem que a validação de scripts seja ignorada por antecessores de blocos conhecidos, sem modificar o modelo de segurança. Veja abaixo para mais detalhes.
+- Em alguns casos, blocos compactados são agora retransmitidos antes de serem totalmente validados conforme o BIP152.
+- A rede P2P foi refaturada com foco na concorrência e na taxa de transferência. As operações de rede não ficam bloqueadas por conta da validação. Como resultado, a recuperação de blocos é muito mais rápida que versões anteriores em muitos casos.
+- O cache UTXO agora reinvindica a memória mempool não utilizada. Isto acelera o download do bloco inicial, pois as pesquisas UTXO ainda são um grande gargalo e ainda não há nenhum uso para o mempool neste estágio.
+
+
+Poda Manual
 --------------
 
-Validation speed and network propagation performance have been greatly
-improved, leading to much shorter sync and initial block download times.
+O Criptoreal Core suporta poda automática do blockchain desde 0.13.2. A poda do blockchain permite economias significativas de espaço de armazenamento, pois a grande maioria dos dados baixados pode ser descartada após o processamento e poucos dados acabam permanecendo no disco.
 
-- The script signature cache has been reimplemented as a "cuckoo cache",
-  allowing for more signatures to be cached and faster lookups.
-- Assumed-valid blocks have been introduced which allows script validation to
-  be skipped for ancestors of known-good blocks, without changing the security
-  model. See below for more details.
-- In some cases, compact blocks are now relayed before being fully validated as
-  per BIP152.
-- P2P networking has been refactored with a focus on concurrency and
-  throughput. Network operations are no longer bottlenecked by validation. As a
-  result, block fetching is several times faster than previous releases in many
-  cases.
-- The UTXO cache now claims unused mempool memory. This speeds up initial block
-  download as UTXO lookups are a major bottleneck there, and there is no use for
-  the mempool at that stage.
+A poda de bloco manual pode ser ativada pela configuração `-prune=1`. Uma vez que isto está configurado, o comando RPC `pruneblockchain` pode ser usado para podar a blockchain para uma altura ou timestamp específica.
 
-
-Manual Pruning
---------------
-
-Criptoreal Core has supported automatically pruning the blockchain since 0.13.2. Pruning
-the blockchain allows for significant storage space savings as the vast majority of
-the downloaded data can be discarded after processing so very little of it remains
-on the disk.
-
-Manual block pruning can now be enabled by setting `-prune=1`. Once that is set,
-the RPC command `pruneblockchain` can be used to prune the blockchain up to the
-specified height or timestamp.
-
-`getinfo` Deprecated
+`getinfo` Descontinuada
 --------------------
 
-The `getinfo` RPC command has been deprecated. Each field in the RPC call
-has been moved to another command's output with that command also giving
-additional information that `getinfo` did not provide. The following table
-shows where each field has been moved to:
+O comando RPC `getinfo` foi descontinuado. Cada campo na chamada RPC foi movido para a saída de outro comando com este mesmo comando dando informações adicionais que `getinfo` não forneceu. A tabela a seguir mostra para onde cada campo foi movido:
 
-|`getinfo` field   | Moved to                                  |
+| campo `getinfo`  | Movido para                             |
 |------------------|-------------------------------------------|
 `"version"`	   | `getnetworkinfo()["version"]`
 `"protocolversion"`| `getnetworkinfo()["protocolversion"]`
