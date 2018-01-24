@@ -1,125 +1,92 @@
-Sample init scripts and service configuration for bitcoind
+Exemplos de script de inicialização e configuração de serviço para bitcoind
 ==========================================================
 
-Sample scripts and configuration files for systemd, Upstart and OpenRC
-can be found in the contrib/init folder.
+Scripts de exemplo e arquivos de configuração para systemd, Upstart e OpenRC podem ser encontrados na pasta contrib/init.
 
-    contrib/init/bitcoind.service:    systemd service unit configuration
-    contrib/init/bitcoind.openrc:     OpenRC compatible SysV style init script
-    contrib/init/bitcoind.openrcconf: OpenRC conf.d file
-    contrib/init/bitcoind.conf:       Upstart service configuration file
-    contrib/init/bitcoind.init:       CentOS compatible SysV style init script
-
-1. Service User
+    contrib/init/bitcoind.service:    unidade de configuração de serviço systemd
+    contrib/init/bitcoind.openrc:     Script de inicialização OpenRC compatível com SysV
+    contrib/init/bitcoind.openrcconf: arquivo OpenRC conf.d 
+    contrib/init/bitcoind.conf:       Arquivo de configuração do serviço de inicialização
+    contrib/init/bitcoind.init:       Script de inicialização SysV compatível com CentOS
+    
+1. Usuário de serviço
 ---------------------------------
 
-All three Linux startup configurations assume the existence of a "bitcoin" user
-and group.  They must be created before attempting to use these scripts.
-The OS X configuration assumes bitcoind will be set up for the current user.
+Todas as três configurações de inicialização do Linux assumem a existência de um usuário e um grupo "bitcoin". Eles devem ser criados antes de tentar usar estes scripts. A configuração do OS X assume que o bitcoind será configurado para o usuário atual.
 
-2. Configuration
+2. Configuração
 ---------------------------------
 
-At a bare minimum, bitcoind requires that the rpcpassword setting be set
-when running as a daemon.  If the configuration file does not exist or this
-setting is not set, bitcoind will shutdown promptly after startup.
+Em um mínimo, o bitcoind exige que a configuração rpcpassword seja definida quando executada como um daemon. Se o arquivo de configuração não existir ou esta configuração não estiver definida, o bitcoind será desligado imediatamente após a inicialização.
 
-This password does not have to be remembered or typed as it is mostly used
-as a fixed token that bitcoind and client programs read from the configuration
-file, however it is recommended that a strong and secure password be used
-as this password is security critical to securing the wallet should the
-wallet be enabled.
+Esta senha não precisa ser lembrada ou digitada, pois é usada principalmente como um token fixo onde o bitcoind e os programas são lidos a partir do arquivo de configuração, entretanto é recomendado qeu uma senha forte e segura seja usada, pois ela é de segurança crítica para garantir a carteira caso esteja habilitada.
 
-If bitcoind is run with the "-server" flag (set by default), and no rpcpassword is set,
-it will use a special cookie file for authentication. The cookie is generated with random
-content when the daemon starts, and deleted when it exits. Read access to this file
-controls who can access it through RPC.
+Se bitcoind for executado com o sinalizador "-server" (definido por padrão) e nenhuma rpcpassword está configurada, ele usará um arquivo de cookie especial para autenticação. O cookie é gerado com conteúdo aleatório quando o daemon é iniciado e excluído quando terminado. O acesso de leitura a este arquivo controla quem pode acessá-lo através do RPC.
 
-By default the cookie is stored in the data directory, but it's location can be overridden
-with the option '-rpccookiefile'.
+Por padrão, o cookie é armazenado no diretório de dados, mas sua localização pode ser substituída pela opção '-rpccookiefile'.
 
-This allows for running bitcoind without having to do any manual configuration.
+Isto permite a execução do bitcoind sem ter que fazer qualquer configuração manual.
 
-`conf`, `pid`, and `wallet` accept relative paths which are interpreted as
-relative to the data directory. `wallet` *only* supports relative paths.
+`conf`, `pid`, e `wallet` aceitam caminhos relativos que são interpretados como relativos ao diretório de dados. `wallet` *somente* suporta caminhos relativos.
 
-For an example configuration file that describes the configuration settings,
-see `contrib/debian/examples/bitcoin.conf`.
+Para um exemplo de arquivo de configuração que descreve as configurações, consulte `contrib/debian/examples/bitcoin.conf`.
 
-3. Paths
+3. Caminhos
 ---------------------------------
 
 3a) Linux
 
-All three configurations assume several paths that might need to be adjusted.
+Todas as três configurações assumem vários caminhos que talvez precisem ser ajustados.
 
-Binary:              `/usr/bin/bitcoind`  
-Configuration file:  `/etc/bitcoin/bitcoin.conf`  
-Data directory:      `/var/lib/bitcoind`  
-PID file:            `/var/run/bitcoind/bitcoind.pid` (OpenRC and Upstart) or `/var/lib/bitcoind/bitcoind.pid` (systemd)  
-Lock file:           `/var/lock/subsys/bitcoind` (CentOS)  
+Binários              `/usr/bin/bitcoind`  
+Arqivo de configuração:  `/etc/bitcoin/bitcoin.conf`  
+Diretório de dados:      `/var/lib/bitcoind`  
+Arquivo PID:            `/var/run/bitcoind/bitcoind.pid` (OpenRC e Upstart) ou `/var/lib/bitcoind/bitcoind.pid` (systemd)  
+Arquivo Lock:           `/var/lock/subsys/bitcoind` (CentOS)  
 
-The configuration file, PID directory (if applicable) and data directory
-should all be owned by the bitcoin user and group.  It is advised for security
-reasons to make the configuration file and data directory only readable by the
-bitcoin user and group.  Access to bitcoin-cli and other bitcoind rpc clients
-can then be controlled by group membership.
+O arquivo de configuração, o diretório PID (se aplicável) e o diretório de dados devem ser todos pertencentes ao usuario e ao grupo bitcoin. É aconselhável por motivos de segurança tornar o arquivo de configuração e o diretório de dados legíveis apenas para o usuário e grupo bitcoin.  O acesso ao bitcoin-cli e outros clientes rpc bitcoind podem ser controlados pela associação de grupo.
 
 3b) Mac OS X
 
-Binary:              `/usr/local/bin/bitcoind`  
-Configuration file:  `~/Library/Application Support/Bitcoin/bitcoin.conf`  
-Data directory:      `~/Library/Application Support/Bitcoin`
-Lock file:           `~/Library/Application Support/Bitcoin/.lock`
+Binário:              `/usr/local/bin/bitcoind`  
+Arquivo de Configuração:  `~/Library/Application Support/Bitcoin/bitcoin.conf`  
+Diretório de dados:      `~/Library/Application Support/Bitcoin`
+Arquivo Lock:           `~/Library/Application Support/Bitcoin/.lock`
 
-4. Installing Service Configuration
------------------------------------
+4. Instalando a configuração do serviço
+---------------------------------------
 
 4a) systemd
 
-Installing this .service file consists of just copying it to
-/usr/lib/systemd/system directory, followed by the command
-`systemctl daemon-reload` in order to update running systemd configuration.
+A instalação deste arquivo .service consiste apenas em copiá-lo para /usr/lib/systemd/diretório do sistema, seguido pelo comando `systemctl daemon-reload` para atualizar a execução da configuração systemd.
 
-To test, run `systemctl start bitcoind` and to enable for system startup run
-`systemctl enable bitcoind`
+Para testar, execute `systemctl start bitcoind` e para habilitar para inicialização execute `systemctl enable bitcoind`
 
 4b) OpenRC
 
-Rename bitcoind.openrc to bitcoind and drop it in /etc/init.d.  Double
-check ownership and permissions and make it executable.  Test it with
-`/etc/init.d/bitcoind start` and configure it to run on startup with
-`rc-update add bitcoind`
+Renomeie bitcoind.openrc para bitcoind e solte-o em /etc/init.d. Verifique a propriedade e as permissões e torne-o executável.  Teste com `/etc/init.d/bitcoind start` e configure para executar na inicialização com `rc-update add bitcoind`
 
-4c) Upstart (for Debian/Ubuntu based distributions)
+4c) Upstart (para distribuições baseadas em Debian/Ubuntu)
 
-Drop bitcoind.conf in /etc/init.  Test by running `service bitcoind start`
-it will automatically start on reboot.
+Coloque bitcoind.conf em /etc/init. Teste executando `service bitcoind start`. Ele será executado automaticamente na inicialização.
 
-NOTE: This script is incompatible with CentOS 5 and Amazon Linux 2014 as they
-use old versions of Upstart and do not supply the start-stop-daemon utility.
+NOTA: Este script é incompatível com o CentOS 5 e o Amazon Linux 2014, pois usam versões antigas do Upstart e não fornecem o utilitário start-stop-daemon.
 
 4d) CentOS
 
-Copy bitcoind.init to /etc/init.d/bitcoind. Test by running `service bitcoind start`.
+Copie bitcoind.init para /etc/init.d/bitcoind. Teste executando `service bitcoind start`.
 
-Using this script, you can adjust the path and flags to the bitcoind program by
-setting the BITCOIND and FLAGS environment variables in the file
-/etc/sysconfig/bitcoind. You can also use the DAEMONOPTS environment variable here.
+Usando este script, você pode ajustar o caminho e os sinalizadores para o programa bitcoind definindo as variáveis de ambiente BITCOIND e FLAGS no arquivo /etc/sysconfig/bitcoind. Você tambem pode usar a variável de ambiente DAEMONOPTS aqui.
 
 4e) Mac OS X
 
-Copy org.bitcoin.bitcoind.plist into ~/Library/LaunchAgents. Load the launch agent by
-running `launchctl load ~/Library/LaunchAgents/org.bitcoin.bitcoind.plist`.
+Copie org.bitcoin.bitcoind.plist para ~/Library/LaunchAgents. Carregue o agente executando `launchctl load ~/Library/LaunchAgents/org.bitcoin.bitcoind.plist`.
 
-This Launch Agent will cause bitcoind to start whenever the user logs in.
+Este agente fará com que o bitcoind inicie assim que o usuário efetuar o login.
 
-NOTE: This approach is intended for those wanting to run bitcoind as the current user.
-You will need to modify org.bitcoin.bitcoind.plist if you intend to use it as a
-Launch Daemon with a dedicated bitcoin user.
+NOTA: Esta abordagem destina-se a quem desejar executar o bitcoind como usuário atual. Você precisará modificar org.bitcoin.bitcoind.plist  se você pretende usá-lo como Launch Daemon com um usuário bitcoin dedicado.
 
 5. Auto-respawn
 -----------------------------------
 
-Auto respawning is currently only configured for Upstart and systemd.
-Reasonable defaults have been chosen but YMMV.
+Auto respawning atualmente só está configurado para Upstart e systemd. Padrões razoáveis foram escolhidos, mas YMMV.
