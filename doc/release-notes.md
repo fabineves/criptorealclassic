@@ -1,92 +1,73 @@
-Bitcoin Core version 0.14.2 is now available from:
+Bitcoin Core versão 0.14.2 já está disponível em:
 
   <https://bitcoin.org/bin/bitcoin-core-0.14.2/>
 
-This is a new minor version release, including various bugfixes and
-performance improvements, as well as updated translations.
+Esta é uma versão menor, incluindo várias correções de bugs e melhorias de performance, assim como traduções atualizadas.
 
-Please report bugs using the issue tracker at github:
+Por favor, informe os bugs usando o rastreador de problemas do github:
 
   <https://github.com/bitcoin/bitcoin/issues>
 
-To receive security and update notifications, please subscribe to:
+Para receber notificações sobre segurança e atualizaçãoes, cadastre-se em:
 
   <https://bitcoincore.org/en/list/announcements/join/>
 
-Compatibility
-==============
-
-Bitcoin Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.8+, and Windows Vista and later.
-
-Microsoft ended support for Windows XP on [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support),
-No attempt is made to prevent installing or running the software on Windows XP, you
-can still do so at your own risk but be aware that there are known instabilities and issues.
-Please do not report issues about Windows XP to the issue tracker.
-
-Bitcoin Core should also work on most other Unix-like systems but is not
-frequently tested on them.
-
-Notable changes
+Compatibilidade
 ===============
+
+O Bitcoin Core é amplamente testado em vários sistemas operacionais usando o kernel do Linux, macOS 10.8+, Windows Vista e posterior.
+
+Microsoft encerrou o suporte para Windows XP em [08 de Abril de 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), Não há problema em tentar instalar o software no Windows XP, você pode fazer isso por sua conta e risco, mas esteja ciente dos problemas e instabilidades conhecidos que irão ocorrer. Por favor, não reporte problemas sobre o Windows XP no rastreador de problemas.
+
+Bitcoin Core também deve funcionar na maioria dos outros sistemas que são semelhantes a Unix, mas não existem testes frequentes neles.
+
+Mudanças Notáveis
+=================
 
 miniupnp CVE-2018-8798
 ----------------------------
 
-Bundled miniupnpc was updated to 2.0.20170509. This fixes an integer signedness error
-(present in MiniUPnPc v1.4.20101221 through v2.0) that allows remote attackers
-(within the LAN) to cause a denial of service or possibly have unspecified
-other impact.
+O miniupnpc foi atualizado para 2.0.20170509. Isto corrige um erro de assinatura de número inteiro (presente no MiniUPnPc v1.4.20101221 até a  v2.0) que permite que ataques remotos (dentro da LAN) causem uma negação de serviço ou possivelmente tenham outro impacto não especificado.
 
-This only affects users that have explicitly enabled UPnP through the GUI
-setting or through the `-upnp` option, as since the last UPnP vulnerability
-(in Bitcoin Core 0.10.3) it has been disabled by default.
+Isto afeta apenas usuários que ativaram explicitamente o UPnP através da configuração da GUI ou através da opção `-upnp`, uma vez que a última vulnerabilidade UPnP (no Bitcoin Core 0.10.3) foi desabilitada por padrão.
 
-If you use this option, it is recommended to upgrade to this version as soon as
-possible.
+Se você usa esta opção, é recomendado atualizar para esta versão o mais rapidamente possível.
 
-Known Bugs
-==========
+Bugs conhecidos
+===============
 
-Since 0.14.0 the approximate transaction fee shown in Bitcoin-Qt when using coin
-control and smart fee estimation does not reflect any change in target from the
-smart fee slider. It will only present an approximate fee calculated using the
-default target. The fee calculated using the correct target is still applied to
-the transaction and shown in the final send confirmation dialog.
+Desde a versão 0.14.0, a taxa de transação aproximada mostrada no Bitcoin-Qt ao usar o controle de moeda e a estimativa de taxa inteligente não reflete qualquer alteração no alvo do controle de taxa inteligente. Apenas apresentará uma taxa aproximada calculada com o objetivo padrão. A taxa calculada usando o alvo correto ainda é aplicada a transação e mostrada na caixa de diálogo de confirmação do envio final.
 
 0.14.2 Change log
 =================
 
-Detailed release notes follow. This overview includes changes that affect
-behavior, not code moves, refactors and string updates. For convenience in locating
-the code changes and accompanying discussion, both the pull request and
-git merge commit are mentioned.
+Seguem notas detalhadas das versões. Esta visão geral inclui mudanças que afetam o comportamento, não movimentos de código, refatores e updates de strings. Por conveniência em localizar as mudanças de código e a discussão que acompanha, tanto o pull request quanto o commit de fusão de git são mencionados.
 
-### RPC and other APIs
-- #10410 `321419b` Fix importwallet edge case rescan bug (ryanofsky)
+### RPC e outras APIs
+- #10410 `321419b` Corrigir o erro de redefinição do recurso importwallet (ryanofsky)
 
-### P2P protocol and network code
-- #10424 `37a8fc5` Populate services in GetLocalAddress (morcos)
+### P2P protocolo e código de rede
+- #10424 `37a8fc5` Preenche serviços em GetLocalAddress (morcos)
 - #10441 `9e3ad50` Only enforce expected services for half of outgoing connections (theuni)
 
-### Build system
+### Compilação do Sistema
 - #10414 `ffb0c4b` miniupnpc 2.0.20170509 (fanquake)
-- #10228 `ae479bc` Regenerate bitcoin-config.h as necessary (theuni)
+- #10228 `ae479bc` Regenera bitcoin-config.h conforme necessário (theuni)
 
-### Miscellaneous
-- #10245 `44a17f2` Minor fix in build documentation for FreeBSD 11 (shigeya)
-- #10215 `0aee4a1` Check interruptNet during dnsseed lookups (TheBlueMatt)
+### Diversos
+- #10245 `44a17f2` Pequena correção na documentação de compilação para o FreeBSD 11 (shigeya)
+- #10215 `0aee4a1` Verifica a interruptNet durante as pesquisas de dnsseed (TheBlueMatt)
 
 ### GUI
-- #10231 `1e936d7` Reduce a significant cs_main lock freeze (jonasschnelli)
+- #10231 `1e936d7` Reduz um congelamento significativo de bloqueio cs_main lock (jonasschnelli)
 
-### Wallet
-- #10294 `1847642` Unset change position when there is no change (instagibbs)
+### Carteira
+- #10294 `1847642` Desliga a posição de mudança quando não há alterações (instagibbs)
 
-Credits
+Créditos
 =======
 
-Thanks to everyone who directly contributed to this release:
+Obrigado a todos que contribuíram diretamente para o lançamento desta versão:
 
 - Alex Morcos
 - Cory Fields
@@ -98,5 +79,5 @@ Thanks to everyone who directly contributed to this release:
 - Shigeya Suzuki
 - Wladimir J. van der Laan
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+Além de todos que ajudaram a traduzir em [Transifex](https://www.transifex.com/projects/p/bitcoin/).
 
