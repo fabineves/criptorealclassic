@@ -1,125 +1,95 @@
-TOR SUPPORT IN CRIPTOREAL
+SUPORTE TOR NO CRIPTOREAL
 ======================
 
-It is possible to run Criptoreal as a Tor hidden service, and connect to such services.
+É possível executar Criptoreal como um serviço oculto Tor, e se conectar a estes serviços.
 
-The following directions assume you have a Tor proxy running on port 9050. Many distributions default to having a SOCKS proxy listening on port 9050, but others may not. In particular, the Tor Browser Bundle defaults to listening on port 9150. See [Tor Project FAQ:TBBSocksPort](https://www.torproject.org/docs/faq.html.en#TBBSocksPort) for how to properly
-configure Tor.
+As instruções a seguir indicam que você possui um proxy Tor que roda na porta 9050. Muitas distribuições são padrão para ter um proxy SOCKS que escuta na porta 9050, mas outros talvez não. Em particular, o navegador Tor é padrão para ouvir na porta 9150. Veja [Tor Project FAQ:TBBSocksPort](https://www.torproject.org/docs/faq.html.en#TBBSocksPort) para saber como configurar Tor corretamente.
 
 
-1. Run criptoreal behind a Tor proxy
----------------------------------
+1. Execute criptoreal atras de um proxy Tor
+-------------------------------------------
 
-The first step is running Criptoreal behind a Tor proxy. This will already make all
-outgoing connections be anonymized, but more is possible.
+O primeiro passo é executar Criptoreal atrás de um proxy Tor. Isto já permitirá que todas as conexões de saída sejam anônimas, mas é possível fazer mais.
 
-	-proxy=ip:port  Set the proxy server. If SOCKS5 is selected (default), this proxy
-	                server will be used to try to reach .onion addresses as well.
+	-proxy=ip:port  Configura o servidor proxy. Se SOCKS5 for selecionado (padrão), este servidor proxy
+	                será usado para tentar alcançar os endereços .onion também.
 
-	-onion=ip:port  Set the proxy server to use for tor hidden services. You do not
-	                need to set this if it's the same as -proxy. You can use -noonion
-	                to explicitly disable access to hidden service.
+	-onion=ip:port  Define o servidor proxy para uso em serviços ocultos. Você não precisa
+	                definir isso se for o mesmo que -proxy. Você pode usar -noonion
+	                para desativar explicitamente o acesso ao serviço oculto.
 
-	-listen         When using -proxy, listening is disabled by default. If you want
-	                to run a hidden service (see next section), you'll need to enable
-	                it explicitly.
+	-listen         Ao usar -proxy, a escuta é desabilitada por padrão. Se você deseja
+	                eecutar um serviço oculto (veja a próxima seção), você precisará ativar
+	                explicitamente.
 
-	-connect=X      When behind a Tor proxy, you can specify .onion addresses instead
-	-addnode=X      of IP addresses or hostnames in these parameters. It requires
-	-seednode=X     SOCKS5. In Tor mode, such addresses can also be exchanged with
-	                other P2P nodes.
+	-connect=X      Quando estiver por trás de um proxy Tor, você pode especificar endereços .onion
+	-addnode=X      ao invés de endereços IP addresses ou hostnames nestes parâmetros. Requer
+	-seednode=X     SOCKS5. No modo Tor, tais endereços podem ser trocados com outros
+	                nós P2P.
 
-In a typical situation, this suffices to run behind a Tor proxy:
+Em uma situação típica, isto basta para executar atrás de um proxy Tor:
 
 	./criptoreal -proxy=127.0.0.1:9050
 
 
-2. Run a criptoreal hidden server
-------------------------------
+2. Executar criptoreal em um servidor oculto
+--------------------------------------------
 
-If you configure your Tor system accordingly, it is possible to make your node also
-reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equivalent
-config file):
+Se você configurar seu sistema Tor em conformidade, é possível tornar seu nó também acessível a partir da rede Tor. Adicione estas linhas ao seu /etc/tor/torrc (ou arquivo de configuração equivalente):
 
 	HiddenServiceDir /var/lib/tor/criptoreal-service/
 	HiddenServicePort 5526 127.0.0.1:5526
 	HiddenServicePort 15526 127.0.0.1:15526
 
-The directory can be different of course, but (both) port numbers should be equal to
-your criptoreald's P2P listen port (5526 by default).
+O diretório pode ser diferente, claro, mas (ambos) números de porta devem ser iguais a porta de escuta P2P do seu criptoreald (5526 por padrão).
 
-	-externalip=X   You can tell criptoreal about its publicly reachable address using
-	                this option, and this can be a .onion address. Given the above
-	                configuration, you can find your onion address in
-	                /var/lib/tor/criptoreal-service/hostname. Onion addresses are given
-	                preference for your node to advertise itself with, for connections
-	                coming from unroutable addresses (such as 127.0.0.1, where the
-	                Tor proxy typically runs).
+	-externalip=X   Você informar ao criptoreal sobre o endereço acessível ao público usando
+	                esta opção, e esta pode ser um endereço .onion. Com a configuração 
+	                acima, você pode encontrar o seu endereço onion em
+	                /var/lib/tor/criptoreal-service/hostname. Endereços Onion recebem preferência
+	                para seu nó anunciar-se com, para conexões provenientes de endereços
+	                não roteáveis (como 127.0.0.1, onde o proxy Tor geralmente é executado).
 
-	-listen         You'll need to enable listening for incoming connections, as this
-	                is off by default behind a proxy.
+	-listen         Você precisa habilitar a audição de conexões recebidas, pois estas
+	                estão desativadas por padrão quando estão por trás de um proxy.
 
-	-discover       When -externalip is specified, no attempt is made to discover local
-	                IPv4 or IPv6 addresses. If you want to run a dual stack, reachable
-	                from both Tor and IPv4 (or IPv6), you'll need to either pass your
-	                other addresses using -externalip, or explicitly enable -discover.
-	                Note that both addresses of a dual-stack system may be easily
-	                linkable using traffic analysis.
+	-discover       Quando -externalip é especificado, nenhuma tentativa é feita para descobrir endereços locais
+	                IPv4 ou IPv6. Se você deseja executar uma pilha dupla, acessível tanto de
+	                Tor e IPv4 (ou IPv6), você precisará passar seus outros endereços 
+	                usando -externalip, ou explicitamente habilitar -discover.
+	                Note que ambos os endereços de um sistema de pilha dupla podem ser facilmente
+	                vinculáveis usando análise de tráfego.
 
-In a typical situation, where you're only reachable via Tor, this should suffice:
+Em uma situação típica, onde você só pode ser alcançado via Tor, isto deve bastar:
 
 	./criptoreald -proxy=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -listen
 
-(obviously, replace the Onion address with your own). It should be noted that you still
-listen on all devices and another node could establish a clearnet connection, when knowing
-your address. To mitigate this, additionally bind the address of your Tor proxy:
+(obviamente, substitua o endereço Onion com o seu próprio). Deve notar-se que você ainda escuta em todos os dispositivos e outro nó pode estabelecer uma conexão inteligente, quando conhece seu endereço. Para mitigar isto, vincule o endereço do seu proxy Tor:
 
 	./criptoreald ... -bind=127.0.0.1
 
-If you don't care too much about hiding your node, and want to be reachable on IPv4
-as well, use `discover` instead:
+Se você não se importa muito em esconder o seu nó, e quer ficar alcançável também no IPv4, use `discover`:
 
 	./criptoreald ... -discover
 
-and open port 5526 on your firewall (or use -upnp).
+e abra a porta 5526 no seu firewall (ou use -upnp).
 
-If you only want to use Tor to reach onion addresses, but not use it as a proxy
-for normal IPv4/IPv6 communication, use:
+Se você quiser usar Tor apenas para alcançar o endereço onion, mas não use como um proxy para comunicação IPv4/IPv6, use:
 
 	./criptoreal -onion=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -discover
 
-3. Automatically listen on Tor
+3. Ouvir automaticamente em Tor
 --------------------------------
 
-Starting with Tor version 0.2.7.1 it is possible, through Tor's control socket
-API, to create and destroy 'ephemeral' hidden services programmatically.
-Criptoreal Core has been updated to make use of this.
+Começando com a versão 0.2.7.1 do Tor é possível, através da API do soquete de controle de Tor, criar e destruir programas escondidos "efêmeros" de forma pragmática. Criptoreal Core foi atualizado para utilizar isso.
 
-This means that if Tor is running (and proper authentication has been configured),
-Criptoreal Core automatically creates a hidden service to listen on. This will positively 
-affect the number of available .onion nodes.
+Isto significa que se Tor estiver em execução (e autenticação adequada foi configurada), Criptoreal Core cria automaticamente um serviço oculto para ouvir. Isto afetará positivamente o número de nós .onion disponíveis.
 
-This new feature is enabled by default if Criptoreal Core is listening (`-listen`), and
-requires a Tor connection to work. It can be explicitly disabled with `-listenonion=0`
-and, if not disabled, configured using the `-torcontrol` and `-torpassword` settings.
-To show verbose debugging information, pass `-debug=tor`.
+Esta nova funcionalidade é ativada por padrão se o Criptoreal Core estiver ouvindo (`-listen`) e requer uma conexão Tor para funcionar. Pode ser desativado com `-listenonion=0` e se não for desabilitado, configurado usando `-torcontrol` e `-torpassword`. Para mostrar informações detalhadas de depuração, use `-debug=tor`.
 
-Connecting to Tor's control socket API requires one of two authentication methods to be 
-configured. For cookie authentication the user running criptoreald must have write access 
-to the `CookieAuthFile` specified in Tor configuration. In some cases this is 
-preconfigured and the creation of a hidden service is automatic. If permission problems 
-are seen with `-debug=tor` they can be resolved by adding both the user running tor and 
-the user running criptoreald to the same group and setting permissions appropriately. On 
-Debian-based systems the user running criptoreald can be added to the debian-tor group, 
-which has the appropriate permissions. An alternative authentication method is the use 
-of the `-torpassword` flag and a `hash-password` which can be enabled and specified in 
-Tor configuration.
+Conectar-se a API do socket de controle do Tor requer que um dos dois métodos de autenticação seja configurado. Para a autenticação de cookies, o usuário que estiver executando o criptoreald deve ter acesso de gravação ao `CookieAuthFile` especificado na configuração do Tor. Em alguns casos, isto é pré-configurado e a criação de um serviço oculto é automática. Se os problemas de permissão forem vistos com `-debug=tor` eles podem ser resolvidos adicionando tanto o usuário executando quanto o usuário executando o criptoreald no mesmo grupo e definindo permissões adequadamente. Nos sistemas baseados em Debian, o usuário que está executando o criptoreald pode ser adicionado ao grupo debian-tor, que possui as permissões apropriadas. Um método de autenticação alternativo é o uso do sinalizador `-torpassword` e uma `hash-password` que podem ser ativadas e especificadas na configuração de Tor.
 
-4. Privacy recommendations
----------------------------
+4. Recomendações de Privacidade
+-------------------------------
 
-- Do not add anything but criptoreal ports to the hidden service created in section 2.
-  If you run a web service too, create a new hidden service for that.
-  Otherwise it is trivial to link them, which may reduce privacy. Hidden
-  services created automatically (as in section 3) always have only one port
-  open.
+- Não adicione nada além de portas criptoreal ao serviço oculto criado na seção 2. Se você executar um serviço da Web, crie um novo serviço oculto para isso. Caso contrário, é trivial relacioná-los, o que pode reduzir a privacidade. Os serviços ocultos criados automaticamente (como na seção 3) sempre têm apenas uma porta aberta.
