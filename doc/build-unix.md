@@ -20,7 +20,7 @@ Para Compilar
 ./autogen.sh
 ./configure
 make
-make install # optional
+make install # opcional
 ```
 
 Isto também irá compilar o criptoreal-qt se as dependências forem atendidas.
@@ -44,8 +44,8 @@ Dependências Opcionais:
  libdb4.8    | Berkeley DB      | Armazenamento da carteira (necessário somente quando a carteira é ativada)
  qt          | GUI              | Conjunto de ferramentas GUI (necessário somente com GUI ativo)
  protobuf    | Pagamentos em GUI| Formato de intercâmbio de dados usado para o protocolo de pagamento (necessário somente com GUI ativo)
- libqrencode | QR codes em GUI  | Opcional para gerar QR codes (only needed when GUI enabled)
- univalue    | Utility          | Análise e codificação JSON  (A versão do bundle será usada a menos que --with-system-univalue seja configurado)
+ libqrencode | QR codes em GUI  | Opcional para gerar QR codes (necessário somente quando a GUI está habilitada)
+ univalue    | Utilidade        | Análise e codificação JSON  (A versão do bundle será usada a menos que --with-system-univalue seja configurado)
  libzmq3     | notificação ZMQ  | Opcional, permite a geração de notificações ZMQ  (requer versão ZMQ >= 4.x)
 
 Para as versões usadas no lançamento, veja [release-process.md](release-process.md) em *Obter e compilar entradas*.
@@ -86,7 +86,7 @@ Você pode adicionar o repositório e instalar usando os seguintes comandos:
 
 Ubuntu e Debian têm seus próprios pacotes libdb-dev e libdb++-dev, mas estes irão instalar o BerkeleyDB 5.1 ou mais recente, que pode quebrar a compatibilidade binária da carteira com os executáveis distribuídos que são baseados no BerkeleyDB 4.8. Se você não se importa com a compatibilidade da carteira, passe `--with-incompatible-bdb` para configurar.
 
-Veja a seção "Disable-wallet mode" para compilar o Criptoreal Core sem a carteira.
+Veja a seção "Desabilitar modo carteira" para compilar o Criptoreal Core sem a carteira.
 
 Opcional (veja --with-miniupnpc e --enable-upnp-default):
 
@@ -146,9 +146,9 @@ miniupnpc
 [miniupnpc](http://miniupnp.free.fr/) pode ser usado para mapeamento de porta UPnP.  O download pode ser feito [aqui](
 http://miniupnp.tuxfamily.org/files/). O suporte UPnP é compilado e desligado por padrão.  Veja as opcões de configuração para o comportamento upnp desejado:
 
-	--without-miniupnpc      No UPnP support miniupnp not required
-	--disable-upnp-default   (the default) UPnP support turned off by default at runtime
-	--enable-upnp-default    UPnP support turned on by default at runtime
+	--without-miniupnpc      Não é necessário um miniupnp de suporte UPnP
+	--disable-upnp-default   (o padrão) suporte UPnP desativado por padrão no tempo de execução
+	--enable-upnp-default    Suporte UPnP ativado por padrão no tempo de execução
 
 
 Berkeley DB
@@ -218,7 +218,7 @@ Hardening habilita os seguintes recursos:
     ET_DYN
 
 * Pilha não executável
-Se a pilha é executável, então a pilha then trivial baseada em estouro de buffer pode sofrer explorações se buffers vulneráveis forem encontrados. Por padrão, criptoreal deve ser compilado com uma pilha não executável mas se uma das bibliotecas utilizadas solicite uma pilha executável ou alguém cometa um erro e use uma extensão de compilador que necessita de uma pilha executável, este irá compilar silenciosamente um executável sem a proteção da pilha não executável.
+Se a pilha é executável, então a pilha trivial baseada em estouro de buffer pode sofrer explorações se buffers vulneráveis forem encontrados. Por padrão, criptoreal deve ser compilado com uma pilha não executável, mas se uma das bibliotecas utilizadas solicite uma pilha executável ou alguém cometa um erro e use uma extensão de compilador que necessita de uma pilha executável, este irá compilar silenciosamente um executável sem a proteção da pilha não executável.
 
     Para verificar se a pilha é não executável depois da compilação use:
     `scanelf -e ./criptoreal`
@@ -229,7 +229,7 @@ Se a pilha é executável, então a pilha then trivial baseada em estouro de buf
 
     O STK RW- significa que a pilha é legível e gravável, mas não é executável.
 
-Modo Disable-wallet 
+Modo Disable-wallet (Desabilitar Carteira)
 --------------------
 Quando a intenção é apenas executar um node P2P sem uma carteira, criptoreal deve ser compilado no modo disable-wallet com:
 
@@ -242,14 +242,14 @@ não a `getwork`.
 
 Configurações adicionais de Flags
 --------------------------
-Uma lista de configuração adicional de flagas pode ser mostrada com:
+Uma lista de configuração adicional de flags pode ser mostrada com:
 
     ./configure --help
 
 
 Exemplo de configuração e compilação:  Arch Linux
 -----------------------------------
-Este exemplo lista os passos necessários para configurar e compilar somente uma linha de comando, distribuiç~~ao sem carteira das últimas mudanças no Arch Linux:
+Este exemplo lista os passos necessários para configurar e compilar somente uma linha de comando, distribuição sem carteira das últimas mudanças no Arch Linux:
 
     pacman -S git base-devel boost libevent python
     git clone https://github.com/criptoreal/criptoreal.git
@@ -262,10 +262,10 @@ Nota:
 Habilitar o suporte a carteira requer compilar contra um Berkeley DB mais novo que o 4.8 (pacote `db`) usando `--with-incompatible-bdb`,
 ou compilar e depender de uma versão local do Berkeley DB 4.8. Os pacotes do Arch Linux atualmente são compilados usando
 `--with-incompatible-bdb` de acordo com o [PKGBUILD](https://projects.archlinux.org/svntogit/community.git/tree/bitcoin/trunk/PKGBUILD).
-Como mencionado acima, ao manter a portabilidade da carteira entre as distribuições padrão do Criptoreal Core e compiladas de forma independente, o software de node é desejável e o Berkeley DB 4.8 deve ser usado.
+Como mencionado acima, ao manter a portabilidade da carteira entre as distribuições padrão do Criptoreal Core e compiladas de forma independente, o software de nó é desejável e o Berkeley DB 4.8 deve ser usado.
 
 
-ARM Cross-compilation
+Compilação Cruzada ARM
 -------------------
 Estes passos podem ser realizados em, por exemplo, uma VM do Ubuntu. O sistema dependente também funcionará em outras distribuições Linux, entretanto, os comandos para instalar a cadeia de ferramentas serão diferentes.
 
@@ -312,4 +312,4 @@ Então compile usando:
     gmake
 
 *Nota sobre a depuração*: A versão de `gdb` instalada por padrão é [antiga e considerada prejudicial](https://wiki.freebsd.org/GdbRetirement).
-Não é adequado para depurar um programa C++ multi-threaded, nem mesmo para obter backtraces. Por favor instale o pacote `gdb` e use o comando gdb versionado, por exemplo. `gdb7111`.
+Não é adequado para depurar um programa C++ multi tópicos, nem mesmo para obter backtraces. Por favor instale o pacote `gdb` e use o comando gdb versionado, por exemplo. `gdb7111`.
