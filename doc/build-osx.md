@@ -34,7 +34,7 @@ Compilar Criptoreal Core
 
 2.  Compilar criptoreal-core:
 
-    Configure e compile os binários criptoreal assim como o GUI (se Qt for encontrado).
+    Configure e compile os binários criptoreal assim como a GUI (se Qt for encontrado).
 
    Você pode desabilitar GUI build passando `--without-gui` para configurar.
 
@@ -70,13 +70,13 @@ Você pode monitorar o processo de download verificando o arquivo debug.log:
 Outros comandos:
 -------
 
-    ./src/criptoreald -daemon # Starts the criptoreal daemon.
-    ./src/criptoreal-cli --help # Outputs a list of command-line options.
-    ./src/criptoreal-cli help # Outputs a list of RPC commands when the daemon is running.
+    ./src/criptoreald -daemon # Inicia o criptoreal daemon.
+    ./src/criptoreal-cli --help # Mostra uma lista de opções de linha de comando.
+    ./src/criptoreal-cli help # Emite uma lista de comandos RPC quando o daemon está sendo executado.
 
 Usando o Qt Creator como IDE
 ------------------------
-Você pode usar o Qt Creator como um IDE, para desenvolvimento de criptoreal development.
+Você pode usar o Qt Creator como um IDE, para desenvolvimento de criptoreal.
 Faça o download e instale a edição do [Qt Creator](https://www.qt.io/download/).
 Desmarque todas as opções exceto Qt Creator durante o processo de instalação.
 
