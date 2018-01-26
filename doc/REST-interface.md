@@ -11,15 +11,15 @@ API Suportada
 ####Transações
 `GET /rest/tx/<TX-HASH>.<bin|hex|json>`
 
-Dada uma transação hash: retorna uma transação binária, binária codificada como hexadecimal, ou em JSON.
+Dada uma transação hash: retorna uma transação binária, binária codificada como hexadecimal ou em JSON.
 
-Para uma consulta TX, uma deve habilitar o índice da transação via "txindex=1" linha de comando / opções de configuração.
+Para uma consulta TX, deve habilitar o índice da transação via "txindex=1" linha de comando / opções de configuração.
 
 ####Blocos
 `GET /rest/block/<BLOCK-HASH>.<bin|hex|json>`
 `GET /rest/block/notxdetails/<BLOCK-HASH>.<bin|hex|json>`
 
-Dado um bloco hash: retorna um bloco, binário, binário sem codificação ou em JSON.
+Dado um bloco hash: retorna um bloco binário, binário hexadecimal sem codificação ou em JSON.
 
 Tanto a chamada HTTP e a resposta são tratadas totalmente na memória, com o uso máximo de pelo menos 2.66MB (1 MB no máximo por bloco, mais a codificação hexadecimal) por pedido.
 
@@ -82,7 +82,7 @@ $ curl localhost:15527/rest/getutxos/checkmempool/b2cdfd7b89def827ff8af7cd9bff76
 ####Pool de memória
 `GET /rest/mempool/info.json`
 
-Retorna várias informaç~ies sobre o pool de memória TX.
+Retorna várias informações sobre o pool de memória TX.
 Suporta somente JSON como formato de saída.
 * size : (numeric) o número de transações no pool de memória TX 
 * bytes : (numeric) tamanho do pool de memória TX mempool em bytes
@@ -94,4 +94,4 @@ Suporta somente JSON como formato de saída.
 
 Riscos
 -------------
-Executar um navegador web no mesmo node com um Criptoreal habilitado para REST pode ser um risco. O acesso a sites XSS preparados pode ler dados tx/block do seu node colocando links como `<script src="http://127.0.0.1:5527/rest/tx/1234567890.json">` que pode levar à quebra da privacidade dos nodes.
+Executar um navegador web no mesmo node com um criptoreald habilitado para REST pode ser um risco. O acesso a sites XSS preparados, pode ler dados tx/block do seu nó, colocando links como `<script src="http://127.0.0.1:5527/rest/tx/1234567890.json">` que pode levar à quebra da privacidade dos nós.
