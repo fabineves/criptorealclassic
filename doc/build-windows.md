@@ -30,7 +30,7 @@ Para obter o shell bash, você deve ativar primeiramente este recurso no Windows
   * Aceite a licença de uso
   * Crie uma nova conta de usuário UNIX (esta é uma conta separada da sua conta Windows)
 
-Após o shell bash estiver ativo,você pode seguir as instruções abaixo, começando com a seção "Cross-compilation". Compilar a versão de  64-bit version é recomendada mas é possível compilar também a versão de 32-bit.
+Após o shell bash estiver ativo, você pode seguir as instruções abaixo, começando com a seção "Compilação Cruzada". Compilar a versão de  64-bit é recomendada, mas é possível compilar também a versão de 32-bit.
 
 Compilação Cruzada
 -------------------
@@ -54,7 +54,7 @@ Em seguida compile usando:
     cd depends
     make HOST=x86_64-w64-mingw32
     cd ..
-    ./autogen.sh # not required when building from tarball
+    ./autogen.sh # não é necessário quando compilando a partir do tarball
     CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/
     make
 
@@ -80,6 +80,6 @@ Para documentação sobre o sistema de dependência veja [README.md](../depends/
 Instalação
 -------------
 
-Após compilar usando o subsistema do Windows pode ser útil copiar as compilações executáveis para um diretório na mesma unidade do Windows dentro da estrutura de diretorio que aparece na versão `.zip`. Isto só pode ser feito da seguinte forma. Será instalado em `c:\workspace\criptoreal`, por exemplo:
+Após compilar usando o subsistema do Windows pode ser útil copiar as compilações executáveis para um diretório na mesma unidade do Windows, dentro da estrutura de diretorio que aparece na versão `.zip`. Isto só pode ser feito da seguinte forma: Será instalado em `c:\workspace\criptoreal`, por exemplo:
 
     make install DESTDIR=/mnt/c/workspace/criptoreal
