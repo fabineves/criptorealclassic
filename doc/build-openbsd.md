@@ -2,9 +2,9 @@ Guia de compilação do OpenBSD
 ======================
 (atualizado para OpenBSD 6.0)
 
-Este guia descreve como compilar criptoreal e utilitários de linha de comando no OpenBSD.
+Este guia descreve como compilar criptoreald e utilitários de linha de comando no OpenBSD.
 
-Como o OpenBSD é mais comum como sistema operacional de um servidor, não nos preocuparemos com o GUI.
+Como o OpenBSD é mais comum como sistema operacional de um servidor, não nos preocuparemos com a GUI.
 
 Preparação
 -------------
@@ -13,9 +13,9 @@ Execute os seguintes comandos como root para instalar as dependências da base p
 
 ```bash
 pkg_add gmake libtool libevent
-pkg_add autoconf # (select highest version, e.g. 2.69)
-pkg_add automake # (select highest version, e.g. 1.15)
-pkg_add python # (select highest version, e.g. 3.5)
+pkg_add autoconf # (escolha a última versão, e.g. 2.69)
+pkg_add automake # (escolha a última versão, e.g. 1.15)
+pkg_add python # (escolha a última versão, e.g. 3.5)
 ```
 
 O compilador C++ padrão que vem com o OpenBSD 5.9 é o g++ 4.2. Esta versão é antiga (de 2007), e não é capaz de compilar a versão atual do Criptoreal Core, principalmente por não possuir suporte ao C++11, mas mesmo antes deste período já eram encontrados problemas. Então, nós iremos instalar um compilador mais novo.
@@ -26,7 +26,7 @@ GCC
 Você irá instalar uma nova versão do gcc com:
 
 ```bash
-pkg_add g++ # (select newest 4.x version, e.g. 4.9.3)
+pkg_add g++ # (escolha a versão mais nova 4.x, e.g. 4.9.3)
 ```
 
 Este compilador não irá substituir o compilador do sistema, este será instalado como `egcc` e `eg++` em `/usr/local/bin`.
@@ -42,23 +42,23 @@ Não use `pkg_add boost`! A versão do boost instalada desta forma é compilada 
 Isto torna necessária a criação de um boost, ou pelo menos as partes usadas pelo Criptoreal Core, manualmente:
 
 ```
-# Pick some path to install boost to, here we create a directory within the criptoreal directory
+# Escolha um caminho para instalar o boost, aqui criamos um diretório dentro do diretório criptoreal
 CRIPTOREAL_ROOT=$(pwd)
 BOOST_PREFIX="${CRIPTOREAL_ROOT}/boost"
 mkdir -p $BOOST_PREFIX
 
-# Fetch the source and verify that it is not tampered with
+# Procure a fonte e verifique se ela não é adulterada
 curl -o boost_1_61_0.tar.bz2 http://heanet.dl.sourceforge.net/project/boost/boost/1.61.0/boost_1_61_0.tar.bz2
 echo 'a547bd06c2fd9a71ba1d169d9cf0339da7ebf4753849a8f7d6fdb8feee99b640  boost_1_61_0.tar.bz2' | sha256 -c
 # MUST output: (SHA256) boost_1_61_0.tar.bz2: OK
 tar -xjf boost_1_61_0.tar.bz2
 
-# Boost 1.61 needs one small patch for OpenBSD
+# Boost 1.61 precisa de um pequeno patch para o OpenBSD
 cd boost_1_61_0
-# Also here: https://gist.githubusercontent.com/laanwj/bf359281dc319b8ff2e1/raw/92250de8404b97bb99d72ab898f4a8cb35ae1ea3/patch-boost_test_impl_execution_monitor_ipp.patch
+# Aqui também: https://gist.githubusercontent.com/laanwj/bf359281dc319b8ff2e1/raw/92250de8404b97bb99d72ab898f4a8cb35ae1ea3/patch-boost_test_impl_execution_monitor_ipp.patch
 patch -p0 < /usr/ports/devel/boost/patches/patch-boost_test_impl_execution_monitor_ipp
 
-# Build w/ minimum configuration necessary for criptoreal
+# Compilar com a configuração mínima necessária para o criptoreal
 echo 'using gcc : : eg++ : <cxxflags>"-fvisibility=hidden -fPIC" <linkflags>"" <archiver>"ar" <striper>"strip"  <ranlib>"ranlib" <rc>"" : ;' > user-config.jam
 config_opts="runtime-link=shared threadapi=pthread threading=multi link=static variant=release --layout=tagged --build-type=complete --user-config=user-config.jam -sNO_BZIP2=1"
 ./bootstrap.sh --without-icu --with-libraries=chrono,filesystem,program_options,system,thread,test
@@ -109,12 +109,12 @@ A alteração afetará apenas o shell atual e os processos gerados por ele. Para
 
 ### Compilando o Criptoreal Core
 
-**Importante**: use `gmake`, não `make`. O `make`non-GNU irá sair com um erro horrível.
+**Importante**: use `gmake`, não `make`. O `make`não GNU irá sair com um erro horrível.
 
 Preparação:
 ```bash
-export AUTOCONF_VERSION=2.69 # replace this with the autoconf version that you installed
-export AUTOMAKE_VERSION=1.15 # replace this with the automake version that you installed
+export AUTOCONF_VERSION=2.69 # substitua isso pela versão autoconf que você instalou
+export AUTOMAKE_VERSION=1.15 # substitua isso pela versão automake version que você instalou
 ./autogen.sh
 ```
 tenha certeza que o `BDB_PREFIX` e o `BOOST_PREFIX` sejam definidos com os caminhos apropriados das etapas acima.
@@ -143,8 +143,8 @@ Clang (atualmente não está funcionando)
 
 AVISO: Isto está desatualizado, precisa ser atualizado para o OpenBSD 6.0 e tentar novamente.
 
-Usando um g++ mais recebte resulta em ligar o novo código a um novo libstdc++.
-Bibliotecas compiladas com o g++ antigo, irá importar a biblioteca antiga.
+Usar um g++ mais recente resulta em ligar o novo código a um novo libstdc++.
+Bibliotecas compiladas com o g++ antigo, irão importar a biblioteca antiga.
 Isto gera conflitos, necessitando recompilar todas as dependências do aplicativo C++.
 
 Usando clang isto pode - pelo menos em teoria - ser evitado pois ele usa o libstdc++ do sistema base.
