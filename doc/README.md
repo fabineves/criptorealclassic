@@ -1,5 +1,5 @@
-Criptoreal Core 0.14.2 - Tradução
-=====================
+Criptoreal Core 0.14.2
+======================
 
 Configuração
 ---------------------
@@ -15,7 +15,7 @@ Abaixo estão algumas notas úteis para executar o Criptoreal Core na sua plataf
 
 Extraia os arquivos em uma pasta e execute:
 
-- `bin/criptoreal-qt` (GUI) or
+- `bin/criptoreal-qt` (GUI) ou
 - `bin/criptoreald` (headless)
 
 ### Windows
@@ -33,15 +33,15 @@ para ajuda e mais informações.
 * Peça ajuda no canal [#criptoreal](http://webchat.freenode.net?channels=criptoreal) no Freenode. Se você não tem um cliente de IRC use [o webchat](http://webchat.freenode.net?channels=criptoreal).
 * Peça ajuda nos fóruns [CriptorealTalk](https://criptorealtalk.io/).
 
-Construção
+Compilação
 ---------------------
-Abaixo estão as notas dos desenvolvedores para construir Criptoreal na sua plataforma nativa. Não são guias completos, mas incluem as notas mais importantes sobre as bibliotecas, compilação, etc.
+Abaixo estão as notas dos desenvolvedores para compilar Criptoreal na sua plataforma nativa. Não são guias completos, mas incluem as notas mais importantes sobre as bibliotecas, compilação, etc.
 
-- [Notas de construção para OS X](build-osx.md)
-- [Notas de construção para Unix](build-unix.md)
-- [Notas de construção para Windows](build-windows.md)
-- [Notas de construcão para OpenBSD](build-openbsd.md)
-- [Guia de construção Gitian](gitian-building.md)
+- [Notas de compilação para OS X](build-osx.md)
+- [Notas de compilação para Unix](build-unix.md)
+- [Notas de compilação para Windows](build-windows.md)
+- [Notas de compilação para OpenBSD](build-openbsd.md)
+- [Guia de compilação Gitian](gitian-building.md)
 
 Desenvolvimento
 ---------------------
