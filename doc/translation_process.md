@@ -1,58 +1,59 @@
-Translations
-============
+Traduções
+=========
 
-The Bitcoin-Core project has been designed to support multiple localisations. This makes adding new phrases, and completely new languages easily achievable. For managing all application translations, Bitcoin-Core makes use of the Transifex online translation management tool.
+O projeto Bitcoin-Core foi designado para suportar múltiplas localizações. Isto torna a adição de frases e linguagens totalmente possível. Para gerenciar todas as traduções de aplicativos, o Bitcoin-Core faz uso da ferramente de gerenciamento de tradução online Transifex.
 
-### Helping to translate (using Transifex)
-Transifex is setup to monitor the GitHub repo for updates, and when code containing new translations is found, Transifex will process any changes. It may take several hours after a pull-request has been merged, to appear in the Transifex web interface.
+### Ajudando a traduzir (usando Transifex)
+Transifex é configurado para monitorar o repositório GitHub procurando atualizações, e quando o código encontra novas traduções, Transifex irá processar qualquer alteração. Pode levar várias horas depois que um pull request for mesclado, para aparecer na interface web da Transifex.
 
-Multiple language support is critical in assisting Bitcoin’s global adoption, and growth. One of Bitcoin’s greatest strengths is cross-border money transfers, any help making that easier is greatly appreciated.
+O suporte a várias línguas é fundamental para ajudar a adoção global e crescimento do Bitcoin. Uma das maiores forças do Bitcoin, é realizar as transferências de dinheiro entre fronteiras. Qualquer ajuda para tornar isso mais fácil é sempre bem-vinda.
 
-See the [Transifex Bitcoin project](https://www.transifex.com/projects/p/bitcoin/) to assist in translations. You should also join the translation mailing list for announcements - see details below.
+Veja [Projeto Transifex Bitcoin](https://www.transifex.com/projects/p/bitcoin/) para ter ajuda nas traduções. Você também deve participar da lista de discussão de tradução para saber as novidades - veja detalhes abaixo.
 
-### Writing code with translations
-We use automated scripts to help extract translations in both Qt, and non-Qt source files. It is rarely necessary to manually edit the files in `src/qt/locale/`. The translation source files must adhere to the following format:
-`bitcoin_xx_YY.ts or bitcoin_xx.ts`
+### Escrevendo código com traduções
 
-`src/qt/locale/bitcoin_en.ts` is treated in a special way. It is used as the source for all other translations. Whenever a string in the source code is changed, this file must be updated to reflect those changes. A custom script is used to extract strings from the non-Qt parts. This script makes use of `gettext`, so make sure that utility is installed (ie, `apt-get install gettext` on Ubuntu/Debian). Once this has been updated, `lupdate` (included in the Qt SDK) is used to update `bitcoin_en.ts`.
+Usamos scripts automatizados para ajudar a extrair traduções nos arquivos de origem Qt, e não Qt. Raramente é necessário editar manualmente os arquivos em `src/qt/locale/`. Os arquivos de origem da tradução devem aderir ao seguinte formato:
+`bitcoin_xx_YY.ts ou bitcoin_xx.ts`
 
-To automatically regenerate the `bitcoin_en.ts` file, run the following commands:
+`src/qt/locale/bitcoin_en.ts` é tratado de uma maneira especial. É usado como fonte para todas as outras traduções. Sempre que uma string no código fonte é alterada, este arquivo deve ser atualizado para refletir estas alterações. Um script personalizado é usado para extrair cordas das partes não Qt. Este script faz uso do `gettext`, certifique-se que este utilitário está instalado (ex, `apt-get install gettext` no Ubuntu/Debian). Uma vez que isso foi atualizado, `lupdate` (incluído no Qt SDK) é usado para atualizar `bitcoin_en.ts`.
+
+Para regenerar automaticamente o arquivo `bitcoin_en.ts`, execute o seguinte comando:
 ```sh
 cd src/
 make translate
 ```
 
-`contrib/bitcoin-qt.pro` takes care of generating `.qm` (binary compiled) files from `.ts` (source files) files. It’s mostly automated, and you shouldn’t need to worry about it.
+`contrib/bitcoin-qt.pro` cuida da geração de arquivos `.qm` (compilado binário) a partir de arquivos `.ts` (arquivos fonte). É principalmente automatizado e você não precisa se preocupar com isso.
 
-**Example Qt translation**
+**Exemplo de tradução Qt**
 ```cpp
 QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
 ```
 
-### Creating a pull-request
-For general PRs, you shouldn’t include any updates to the translation source files. They will be updated periodically, primarily around pre-releases, allowing time for any new phrases to be translated before public releases. This is also important in avoiding translation related merge conflicts.
+### Criando uma pull-request
+Para PRs gerais, você não deve incluir atualizações dos arquivos de origem da tradução. Eles serão atualizados periodicamente, principalmente em torno de pré-lançamentos, permitindo que o tempo para que novas frases sejam traduzidas antes dos lançamentos públicos. Isto também é importante para evitar conflitos de fusão relacionados à tradução.
 
-When an updated source file is merged into the GitHub repo, Transifex will automatically detect it (although it can take several hours). Once processed, the new strings will show up as "Remaining" in the Transifex web interface and are ready for translators.
+Quando um arquivo de origem atualizado é incorporado no repositório do GitHub, a Transifex irá detectá-lo automaticamente (embora possa demorar várias horas). Uma vez processadas, as novas strings aparecerão como "Restantes" na interface web Transifex e estão prontas para os tradutores.
 
-To create the pull-request, use the following commands:
+Para criar uma pull-request, use os seguintes comandos:
 ```
 git add src/qt/bitcoinstrings.cpp src/qt/locale/bitcoin_en.ts
 git commit
 ```
 
-### Creating a Transifex account
-Visit the [Transifex Signup](https://www.transifex.com/signup/) page to create an account. Take note of your username and password, as they will be required to configure the command-line tool.
+### Criando uma nova conta Transifex
+Visite a página [Transifex](https://www.transifex.com/signup/) para criar uma conta. Guarde seu username e senha, uma vez que eles serão necessários para configurar a linha de comando.
 
-You can find the Bitcoin translation project at [https://www.transifex.com/projects/p/bitcoin/](https://www.transifex.com/projects/p/bitcoin/).
+Você pode encontrar o projeto de tradução Bitcoin em [https://www.transifex.com/projects/p/bitcoin/](https://www.transifex.com/projects/p/bitcoin/).
 
-### Installing the Transifex client command-line tool
-The client it used to fetch updated translations. If you are having problems, or need more details, see [http://docs.transifex.com/developer/client/setup](http://docs.transifex.com/developer/client/setup)
+### Instalando a ferramenta de linha de comando do Transifex
+O programa é utilizado para buscar traduções atualizadas. Se você estiver tendo problemas ou precisar de mais informações, veja [http://docs.transifex.com/developer/client/setup](http://docs.transifex.com/developer/client/setup)
 
-**For Linux and Mac**
+**Para Linux and Mac**
 
 `pip install transifex-client`
 
-Setup your transifex client config as follows. Please *ignore the token field*.
+Configure o transifexda seguinte maneira. Por favor, *ignore o campo token*.
 
 ```ini
 nano ~/.transifexrc
@@ -64,37 +65,39 @@ token =
 username = USERNAME
 ```
 
-**For Windows**
+**Para Windows**
 
-Please see [http://docs.transifex.com/developer/client/setup#windows](http://docs.transifex.com/developer/client/setup#windows) for details on installation.
+Por favor, veja [http://docs.transifex.com/developer/client/setup#windows](http://docs.transifex.com/developer/client/setup#windows) para detalhes na instalação.
 
-The Transifex Bitcoin project config file is included as part of the repo. It can be found at `.tx/config`, however you shouldn’t need change anything.
+O arquivo de configuração do projeto Transifex Bitcoin está incluído como parte do repositório. Pode ser encontrado em `.tx/config`. No entanto você não precisa fazer nenhuma alteração.
 
-### Synchronising translations
-To assist in updating translations, we have created a script to help.
+### Sincronizando traduções
+Para ajudar na atualização de traduções, criamos um script para ajudar.
 
 1. `python contrib/devtools/update-translations.py`
-2. Update `src/qt/bitcoin_locale.qrc` manually or via
+2. Atualizar `src/qt/bitcoin_locale.qrc` manualmente ou via
    `ls src/qt/locale/*ts|xargs -n1 basename|sed 's/\(bitcoin_\(.*\)\).ts/<file alias="\2">locale\/\1.qm<\/file>/'`
-3. Update `src/Makefile.qt.include` manually or via
+3. Atualizar `src/Makefile.qt.include` manualmente ou via
    `ls src/qt/locale/*ts|xargs -n1 basename|sed 's/\(bitcoin_\(.*\)\).ts/  qt\/locale\/\1.ts \\/'`
-4. `git add` new translations from `src/qt/locale/`
+4. `git add` novas traduções de `src/qt/locale/`
 
-**Do not directly download translations** one by one from the Transifex website, as we do a few post-processing steps before committing the translations.
+**Não faça download direto das traduções** uma por uma do site Transifex, como fazemos algumas etapas pós-processamento antes de cometer as traduções.
 
-### Handling Plurals (in source files)
-When new plurals are added to the source file, it's important to do the following steps:
+### Manuseando Plurais (nos arquivos de origem)
 
-1. Open `bitcoin_en.ts` in Qt Linguist (included in the Qt SDK)
-2. Search for `%n`, which will take you to the parts in the translation that use plurals
-3. Look for empty `English Translation (Singular)` and `English Translation (Plural)` fields
-4. Add the appropriate strings for the singular and plural form of the base string
-5. Mark the item as done (via the green arrow symbol in the toolbar)
-6. Repeat from step 2, until all singular and plural forms are in the source file
-7. Save the source file
+Quando novos plurais são adicionados ao arquivo de origem, é importante fazer as seguintes etapas:
+
+1. Abra `bitcoin_en.ts` no Qt Linguist (incluído no Qt SDK)
+2. Procure por `%n`, que irá mostrar as partes da tradução que usam plurais
+3. Procure por campos vazios `English Translation (Singular)` e `English Translation (Plural)` 
+4. Adicione as sequências de caracteres apropriadas para a forma singular e plural da string base
+5. Marque o item como feito (através do símbolo da seta verde na barra de ferramentas)
+6. Repita a partir do passo 2, até que todos os singulares e plurais estejam no arquivo fonte
+7. Salve o arquivo fonte
 
 ### Translating a new language
-To create a new language template, you will need to edit the languages manifest file `src/qt/bitcoin_locale.qrc` and add a new entry. Below is an example of the English language entry.
+
+Para criar um novo modelo de idioma, você precisará editar o arquivo de manifesto de idiomas `src/qt/bitcoin_locale.qrc` e adicionar uma nova entrada. Abaixo está um exemplo da entrada na língua inglesa.
 
 ```xml
 <qresource prefix="/translations">
@@ -103,9 +106,10 @@ To create a new language template, you will need to edit the languages manifest 
 </qresource>
 ```
 
-**Note:** that the language translation file **must end in `.qm`** (the compiled extension), and not `.ts`.
+**Nota:** o arquivo de tradução do idioma **deve terminar em `.qm`** (a extensão compilada) e não `.ts`.
 
-### Questions and general assistance
-The Bitcoin-Core translation maintainers include *tcatm, seone, Diapolo, wumpus and luke-jr*. You can find them, and others, in the Freenode IRC chatroom - `irc.freenode.net #bitcoin-core-dev`.
+### Perguntas e assistência em geral
 
-If you are a translator, you should also subscribe to the mailing list, https://groups.google.com/forum/#!forum/bitcoin-translators. Announcements will be posted during application pre-releases to notify translators to check for updates.
+Os mantenedores da tradução Bitcoin-Core incluem *tcatm, seone, Diapolo, wumpus and luke-jr*. Você pode encontrá-los e também outros, na sala de chat IRC Freenode - `irc.freenode.net #bitcoin-core-dev`.
+
+Se você é um tradutor, você também deve se inscrever na lista de email, https://groups.google.com/forum/#!forum/bitcoin-translators. Anúncios serão postados durante os pré-lançamentos do aplicativo para notificar os tradutores e verificar atualizações.
