@@ -3,7 +3,7 @@ Compilação Gitian
 
 *Instruções de configuração para uma compilação Gitian do Criptoreal Core usando uma VM Debian ou sistema físico.*
 
-Gitian é o processo de compilação determinista que é usado para compilar os executáveis do Criptoreal Core. Ele fornece uma maneira de estar razoavelmente certo de que os executáveis são realmente criados a partir da fonte no GitHub. Ele também garante que as mesmas dependênias testadas sejam usadas e compiladas estaticamente no executável.
+Gitian é o processo de compilação determinista que é usado para compilar os executáveis do Criptoreal Core. Ele fornece uma maneira de estar razoavelmente certo de que os executáveis são realmente criados a partir da fonte no GitHub. Ele também garante que as mesmas dependências testadas sejam usadas e compiladas estaticamente no executável.
 
 Vários desenvolvedores compilam o código fonte seguindo um descritor específico ("receita"), assinam o resultado criptograficamente, e fazem o upload da assinatura resultante. Estes resultados são comparados apenas se eles combinarem, a compilação é aceita e carregada em criptoreal.org.
 
@@ -106,7 +106,7 @@ Esta parte irá explicar como instalar o Debian na VM recém criada.
 
 **Nota**: Navegando pelo instalador Debian: Para manter uma configuração padrão e continuar, apenas clique `Enter`. Para selecionar um botão diferente, pressione `Tab`.
 
-- Escolhas configurações locais e a do teclado (não importa, você pode simplesmente manter as configurações ou colocar sua própria informação)
+- Escolha configurações locais e a do teclado (não importa, você pode simplesmente manter as configurações ou colocar sua própria informação)
 
 ![](gitian-building/debian_install_2_select_a_language.png)
 ![](gitian-building/debian_install_3_select_location.png)
@@ -166,7 +166,7 @@ Esta parte irá explicar como instalar o Debian na VM recém criada.
 ![](gitian-building/debian_install_18_proxy_settings.png)
 
 - Aguarde um momento enquanto o 'Selecione e instale software' é executado
-- Particino concurso de popularidade -> *Não*
+- Participar no concurso de popularidade -> *Não*
 - Escolha o software para instalar. Precisamos apenas do sistema base.
 - Certifique-se de que somente 'SSH server' e 'Standard System Utilities' estejam marcados
 - Desmarque 'Debian Desktop Environment' e 'Print Server'
@@ -246,8 +246,8 @@ adduser debian sudo
 Em seguida, configura o LXC e o restante com as linhas a seguir, que nada mais é do que uma confusão complexa de configurações e soluções alternativas:
 
 ```bash
-# the version of lxc-start in Debian needs to run as root, so make sure
-# that the build script can execute it without providing a password
+# a versão do lxc-start no Debian precisa ser executado como root, então certifique-se
+# de que o script de compilação pode executá-lo sem fornecer uma senha
 echo "%sudo ALL=NOPASSWD: /usr/bin/lxc-start" > /etc/sudoers.d/gitian-lxc
 echo "%sudo ALL=NOPASSWD: /usr/bin/lxc-execute" >> /etc/sudoers.d/gitian-lxc
 # make /etc/rc.local script that sets up bridge between guest and host
@@ -257,8 +257,8 @@ echo 'ifconfig br0 10.0.3.2/24 up' >> /etc/rc.local
 echo 'iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE' >> /etc/rc.local
 echo 'echo 1 > /proc/sys/net/ipv4/ip_forward' >> /etc/rc.local
 echo 'exit 0' >> /etc/rc.local
-# make sure that USE_LXC is always set when logging in as debian,
-# and configure LXC IP addresses
+# Tenha certeza de que USE_LXC está sempre habilitado ao logar como debian,
+# e configure endereços LXC IP 
 echo 'export USE_LXC=1' >> /home/debian/.profile
 echo 'export GITIAN_HOST_IP=10.0.3.2' >> /home/debian/.profile
 echo 'export LXC_GUEST_IP=10.0.3.5' >> /home/debian/.profile
@@ -277,7 +277,7 @@ Não existe o pacote `python-vm-builder` no Debian, então nós mesmos devemos i
 ```bash
 wget http://archive.ubuntu.com/ubuntu/pool/universe/v/vm-builder/vm-builder_0.12.4+bzr494.orig.tar.gz
 echo "76cbf8c52c391160b2641e7120dbade5afded713afaa6032f733a261f13e6a8e  vm-builder_0.12.4+bzr494.orig.tar.gz" | sha256sum -c
-# (verification -- must return OK)
+# (verificação -- deve retornar OK)
 tar -zxvf vm-builder_0.12.4+bzr494.orig.tar.gz
 cd vm-builder-0.12.4+bzr494
 sudo python setup.py install
