@@ -1,5 +1,5 @@
 Travis CI
-=========
+==========
 
 O suporte para uso do travis-ci foi adicionado para automatizar o pull-testing.
 Veja [travis-ci.org](https://travis-ci.org/) para mais informações
