@@ -21,4 +21,4 @@ Desabilitar o listening resultará em menos nós conectados (lembre-se do máxim
 
 ## 3. Reduzir as conexões máximas (`-maxconnections=<num>`)
 
-Reduzir o máximo de nós conectados ao mínimo poderia ser desejável se os limites de tráfego forem pequenos. Tenha em mente que o modelo confiável do criptoreal funciona melhor se você estiver conectado a um punhado de nós.
+Reduzir o máximo de nós conectados ao mínimo poderia ser desejável, se os limites de tráfego forem pequenos. Tenha em mente que o modelo confiável do criptoreal funciona melhor se você estiver conectado a um punhado de nós.
