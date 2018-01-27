@@ -56,14 +56,14 @@ Por exemplo, para descrever uma função use:
 bool function(int arg1, const char *arg2)
 ```
 Uma lista completa de comandos `@xxx` podem ser encontradas em http://www.stack.nl/~dimitri/doxygen/manual/commands.html.
-Como Doxygen reconhece os comentários pelos delimitadores (`/**` and `*/` neste caso), você não
+Como Doxygen reconhece os comentários pelos delimitadores (`/**` e `*/` neste caso), você não
 *precisa* informar qualquer comando para um que um comentário seja válido; apenas um texto de descrição é suficiente.
 
 Para descrever uma classe use a mesma construção acima da definição da classe:
 ```c++
 /**
  * Alertas são para notificações de versões antigas caso elas se tornem obsoletas
- * e precisa do upgrade. Esta mensagem é mostrada na barra de status.
+ * e precisem do upgrade. Esta mensagem é mostrada na barra de status.
  * @see GetWarnings()
  */
 class CAlert
@@ -148,7 +148,7 @@ Tópicos
 
 - ThreadSocketHandler : Envia/Recebe dados dos peers na porta 5526.
 
-- ThreadOpenAddedConnections : Abre conexões de rede para os nodes adicionados.
+- ThreadOpenAddedConnections : Abre conexões de rede para os nós adicionados.
 
 - ThreadOpenConnections : Inicia novas conexões para os peers.
 
@@ -237,7 +237,7 @@ Estrutura de dados C++
 
 - Nunca use a sintaxe `std::map []` ao ler a partir de um mapa, ao invés use o `.find()`
 
-  - *Razão*: `[]` faz uma inserção (do elemento padrão) se o item ainda não existe em um mapa. Isto resultou em perda de memória no passado, assim como as condições de corrida (esperando um comportamento de leitura). Usar `[]` é bom para  *escrever* para um mapa
+  - *Razão*: `[]` faz uma inserção (do elemento padrão) se o item ainda não existe em um mapa. Isto resultou em perda de memória no passado, assim como as condições (esperando um comportamento de leitura). Usar `[]` é bom para  *escrever* para um mapa
 
 - Não compare um interador de uma estrutura de dados com um interador de outra estrutura de dados (mesmo que sejam do mesmo tipo)
 
