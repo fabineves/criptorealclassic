@@ -48,7 +48,7 @@ Seguem notas detalhadas das versões. Esta visão geral inclui mudanças que afe
 
 ### P2P protocolo e código de rede
 - #10424 `37a8fc5` Preenche serviços em GetLocalAddress (morcos)
-- #10441 `9e3ad50` Only enforce expected services for half of outgoing connections (theuni)
+- #10441 `9e3ad50` Apenas impõe serviços esperados para metade das conexões de saída (theuni)
 
 ### Compilação do Sistema
 - #10414 `ffb0c4b` miniupnpc 2.0.20170509 (fanquake)
