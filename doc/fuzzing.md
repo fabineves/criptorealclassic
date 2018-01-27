@@ -53,5 +53,4 @@ Para iniciar o fuzzing atual use:
 ```
 $AFLPATH/afl-fuzz -i ${AFLIN} -o ${AFLOUT} -m52 -- test/test_criptoreal_fuzzy
 ```
-
 Você pode precisar alterar alguns parâmetros do kernel para testar otimamente - `afl-fuzz`irá informar um erro e sugestão se assim for
