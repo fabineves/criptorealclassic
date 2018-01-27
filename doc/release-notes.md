@@ -17,7 +17,7 @@ Compatibilidade
 
 O Bitcoin Core é amplamente testado em vários sistemas operacionais usando o kernel do Linux, macOS 10.8+, Windows Vista e posterior.
 
-Microsoft encerrou o suporte para Windows XP em [08 de Abril de 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), Não há problema em tentar instalar o software no Windows XP, você pode fazer isso por sua conta e risco, mas esteja ciente dos problemas e instabilidades conhecidos que irão ocorrer. Por favor, não reporte problemas sobre o Windows XP no rastreador de problemas.
+Microsoft encerrou o suporte para Windows XP em [08 de Abril de 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), Não há problema em tentar instalar o software no Windows XP, você pode fazê-lo por sua conta e risco, mas esteja ciente dos problemas e instabilidades conhecidos que irão ocorrer. Por favor, não reporte problemas sobre o Windows XP no rastreador de problemas.
 
 Bitcoin Core também deve funcionar na maioria dos outros sistemas que são semelhantes a Unix, mas não existem testes frequentes neles.
 
