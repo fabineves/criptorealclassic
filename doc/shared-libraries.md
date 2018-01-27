@@ -1,7 +1,7 @@
 Bibliotecas Compartilhadas
 ================
 
-## bitcoinconsensus
+## consenso do bitcoin
 
 O propósito desta biblioteca é fazer com que a verificação da funcionalidade que é crítica para o consenso do Bitcoin, fique disponível para outras aplicações, e.x. para ligações de idiomas.
 
@@ -11,7 +11,7 @@ A interface é definida no cabeçalho C `bitcoinconsensus.h` localizado em  `src
 
 #### Versão
 
-`bitcoinconsensus_version` retorna um `unsigned int` com a versão da API *(currently at an experimental `0`)*.
+`bitcoinconsensus_version` retorna um `unsigned int` com a versão da API *(atualmente em um experimento `0`)*.
 
 #### Validação do Script
 
@@ -26,7 +26,7 @@ A interface é definida no cabeçalho C `bitcoinconsensus.h` localizado em  `src
 - `unsigned int flags` - Os sinalizadores de validação do script *(veja abaixo)*.
 - `bitcoinconsensus_error* err` - Terá o código de erro/sucesso para a operação *(veja abaixo)*.
 
-##### Script Flags
+##### Script Flags (Sinalizadores de Script)
 - `bitcoinconsensus_SCRIPT_FLAGS_VERIFY_NONE`
 - `bitcoinconsensus_SCRIPT_FLAGS_VERIFY_P2SH` - Avalia os subscritos P2SH ([BIP16](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)) 
 - `bitcoinconsensus_SCRIPT_FLAGS_VERIFY_DERSIG` - Reforça rigorosamente a conformidade DER ([BIP66](https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki)) 
