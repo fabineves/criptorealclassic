@@ -19,7 +19,7 @@ Todas as três configurações de inicialização do Linux assumem a existência
 
 Em um mínimo, o bitcoind exige que a configuração rpcpassword seja definida quando executada como um daemon. Se o arquivo de configuração não existir ou esta configuração não estiver definida, o bitcoind será desligado imediatamente após a inicialização.
 
-Esta senha não precisa ser lembrada ou digitada, pois é usada principalmente como um token fixo onde o bitcoind e os programas são lidos a partir do arquivo de configuração, entretanto é recomendado qeu uma senha forte e segura seja usada, pois ela é de segurança crítica para garantir a carteira caso esteja habilitada.
+Esta senha não precisa ser lembrada ou digitada, pois é usada principalmente como um token fixo onde o bitcoind e os programas são lidos a partir do arquivo de configuração, entretanto é recomendado que uma senha forte e segura seja usada, pois ela é de segurança crítica para garantir a carteira caso esteja habilitada.
 
 Se bitcoind for executado com o sinalizador "-server" (definido por padrão) e nenhuma rpcpassword está configurada, ele usará um arquivo de cookie especial para autenticação. O cookie é gerado com conteúdo aleatório quando o daemon é iniciado e excluído quando terminado. O acesso de leitura a este arquivo controla quem pode acessá-lo através do RPC.
 
