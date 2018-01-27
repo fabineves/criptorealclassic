@@ -49,18 +49,18 @@ Você pode encontrar o projeto de tradução Bitcoin em [https://www.transifex.c
 ### Instalando a ferramenta de linha de comando do Transifex
 O programa é utilizado para buscar traduções atualizadas. Se você estiver tendo problemas ou precisar de mais informações, veja [http://docs.transifex.com/developer/client/setup](http://docs.transifex.com/developer/client/setup)
 
-**Para Linux and Mac**
+**Para Linux e Mac**
 
 `pip install transifex-client`
 
-Configure o transifexda seguinte maneira. Por favor, *ignore o campo token*.
+Configure o transifex da seguinte maneira. Por favor, *ignore o campo token*.
 
 ```ini
 nano ~/.transifexrc
 
 [https://www.transifex.com]
 hostname = https://www.transifex.com
-password = PASSWORD
+password = SENHA
 token =
 username = USERNAME
 ```
