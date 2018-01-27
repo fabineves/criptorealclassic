@@ -33,7 +33,7 @@ A documentação para as opções de linha de comando na saída de `--help` tamb
 
 Certifique-se de que os valores padrão não terminam na string, mas use a formatação da string como `strprintf(_("Limite para desconectar peers com mal comportamento (default: %u)"), 100)`. Colocar valores padrão nas strings resultou em traduções acidentais no passado, e força a string a ser retransmitida sempre que o valor muda.
 
-Não traduza mensagens que são mostrada somente para os desenvolvedores, como aquelas que aparecem apenas quando `--help-debug` é usado.
+Não traduza mensagens que são mostradas somente para os desenvolvedores, como aquelas que aparecem apenas quando `--help-debug` é usado.
 
 Recomendações Gerais
 ------------------------
