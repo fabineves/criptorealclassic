@@ -90,6 +90,6 @@ Esta nova funcionalidade é ativada por padrão se o Criptoreal Core estiver ouv
 Conectar-se a API do socket de controle do Tor requer que um dos dois métodos de autenticação seja configurado. Para a autenticação de cookies, o usuário que estiver executando o criptoreald deve ter acesso de gravação ao `CookieAuthFile` especificado na configuração do Tor. Em alguns casos, isto é pré-configurado e a criação de um serviço oculto é automática. Se os problemas de permissão forem vistos com `-debug=tor` eles podem ser resolvidos adicionando tanto o usuário executando quanto o usuário executando o criptoreald no mesmo grupo e definindo permissões adequadamente. Nos sistemas baseados em Debian, o usuário que está executando o criptoreald pode ser adicionado ao grupo debian-tor, que possui as permissões apropriadas. Um método de autenticação alternativo é o uso do sinalizador `-torpassword` e uma `hash-password` que podem ser ativadas e especificadas na configuração de Tor.
 
 4. Recomendações de Privacidade
--------------------------------
+---------------------------------
 
 - Não adicione nada além de portas criptoreal ao serviço oculto criado na seção 2. Se você executar um serviço da Web, crie um novo serviço oculto para isso. Caso contrário, é trivial relacioná-los, o que pode reduzir a privacidade. Os serviços ocultos criados automaticamente (como na seção 3) sempre têm apenas uma porta aberta.
