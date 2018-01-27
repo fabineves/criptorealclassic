@@ -4,7 +4,7 @@ O Criptoreal Core versão 0.14.2 está disponível em:
 
 Esta é uma nova versão, incluindo novos recursos, várias correções de bugs e melhorias de desempenho, assim como traduções atualizadas.
 
-Por favor, reporte bugs usando o issue tracker do github:
+Por favor, reporte bugs usando o rastreador de erros do github:
 
   <https://github.com/criptoreal/criptoreal/issues>
 
@@ -13,7 +13,7 @@ Compatibilidade
 
 Criptoreal Core é amplamente testado em vários sistemas operacionais usando o kernel do Linux, macOS 10.8+, Windows Vista e posterior.
 
-A Microsoft encerrou o suporte para Windows XP em [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), nenhuma tentativa é feita para evitar a instalação ou a execução do software no Windows XP, você ainda pode faz^-lo por sua conta e risco mas fique ciente que existem instabilidades e problemas já conhecidos. Por favor não reporte problemas com o Windows XP no  issue tracker.
+A Microsoft encerrou o suporte para Windows XP em [8 de abril de 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), nenhuma tentativa é feita para evitar a instalação ou a execução do software no Windows XP, você ainda pode fazê-lo por sua conta e risco mas fique ciente que existem instabilidades e problemas já conhecidos. Por favor não reporte problemas com o Windows XP no  rastreador de erros.
 
 Criptoreal Core também deve funcionar na maioria dos sistemas semelhantes ao Unix, mas estes não são frequentemente testados.
 
@@ -178,9 +178,9 @@ Mudanças HTTP REST
 Políticas de Taxa Mínima
 -------------------------
 
-Uma vez que as alterações em 0.13 para limitar automaticamente o tamanho do mempool e melhorar o desempenho da criação de blocos no código de mineração, não foi importante para nodes de retransmissão ou mineiros definir `-minrelaytxfee`. Com esta versão, os seguintes conceitos que estavam vinculados a esta opção foram separados:
+Uma vez que as alterações em 0.13 para limitar automaticamente o tamanho do mempool e melhorar o desempenho da criação de blocos no código de mineração, não for importante para nodes de retransmissão ou mineiros, definir `-minrelaytxfee`. Com esta versão, os seguintes conceitos que estavam vinculados a esta opção foram separados:
 
-- cálculo do limite para uma saída de poeira. (efetivamente 3 * 1000 satoshis/kB)
+- cálculo do limite para uma saída "dust". (efetivamente 3 * 1000 satoshis/kB)
 - taxa mínima de um pacote de transações para ser incluída em um bloco criado pelo código de mineração. Caso os mineradores desejarem definir este mínimo, eles podem usar a nova opção `-blockmintxfee`.  (padrão para 1000 satoshis/kB)
 
 A opção `-minrelaytxfee` continua a existir, mas é recomendável que fique desativada.
@@ -209,16 +209,16 @@ Gerenciamento de conexão P2P
 Introdução de blocos supostamente válidos
 -----------------------------------------
 
-- Uma parcela significativa do tempo de download do bloco inicial é gasto na verificação de scripts/assinaturas.  Embora a verificação deva passar para garantir a segurança do sistema, nenhum outro resultado dessa verificação é necessário: Se o node soubesse que o histórico de um determinado bloco era válido, poderia ignorar a verificação de scripts para seus antecessores.
+- Uma parcela significativa do tempo de download do bloco inicial é gasto na verificação de scripts/assinaturas.  Embora a verificação deva passar para garantir a segurança do sistema, nenhum outro resultado dessa verificação é necessário: Se o nó soubesse que o histórico de um determinado bloco era válido, poderia ignorar a verificação de scripts para seus antecessores.
 
 - Uma nova opção de configuração 'assumevalid' é fornecida para expressar este conhecimento para o software. Ao contrário dos 'checkpoints' no passado, essa configuração não força o uso de uma determinada cadeia: as cadeias que são consistentes são processadas mais rapidamente, mas outras cadeias ainda são aceitas se elas forem escolhidas como melhores. Também, ao contrário dos 'checkpoints', o usuário pode configurar qual histórico de blocos é assumido como verdadeiro, isso significa que o software até mesmo estando desatualizado pode sincronizar mais rapidamente, se a configuração for atualizada pelo usuário.
 
-- Como a validade de um histórico de cadeia é um fato objetivo simples, é muito mais fácil revisar essa configuração. Como resultado, o software vem com um valor padrão ajustado para coincidir com a cadeia atual pouco antes do lançamento. O uso desse valor padrão pode ser desativado configurando -assumevalid=0
+- Como a validade de um histórico de cadeia é de fato um objetivo simples, é muito mais fácil revisar essa configuração. Como resultado, o software vem com um valor padrão ajustado para coincidir com a cadeia atual pouco antes do lançamento. O uso desse valor padrão pode ser desativado configurando -assumevalid=0
 
 Alterar a reutilização de endereço Fundrawtransaction 
 -----------------------------------------------------
 
-- Antes de 0.14, `fundrawtransaction` era por padrão a carteira sem estado. Em quase todos os casos, `fundrawtransaction` adiciona uma mudança de saída aos resultados da transação financiada. Antes de 0.14, a chave keypool usada nunca foi marcada como chave de mudança de endereço e retornada diretamente ao keypool (levando a reutilização do endereço).  Antes de 0.14, chamar `getnewaddress` diretamente após `fundrawtransaction` gerou o mesmo endereço que o endereço de mudança de saída.
+- Antes de 0.14, `fundrawtransaction` era por padrão a carteira sem estado. Em quase todos os casos, `fundrawtransaction` adiciona uma mudança de saída aos resultados da transação financiada. Antes de 0.14, a chave keypool usada nunca foi marcada como chave de mudança de endereço e retornada diretamente ao keypool (levando a reutilização do endereço).  Antes de 0.14, chamar `getnewaddress` diretamente após `fundrawtransaction`, gerou o mesmo endereço que o endereço de mudança de saída.
 
 - Desde 0.14, fundrawtransaction reserva a chave de mudança de saída do keypool por padrão (opcional configurando `reserveChangeKey`, padrão = `true`)
 
@@ -241,7 +241,7 @@ Contabilidade de memória UTXO
 
 O uso de memória para o cache UTXO está sendo calculado com mais precisão, de modo que o limite configurado (`-dbcache`) será respeitado quando o uso da memória alcance um pico durante o esvaziamento do cache.  A contabilidade de memória em versões anteriores é estimada apenas para metade da utilização real durante o pico.
 
-O padrão `-dbcache` também foi alterado nesta versão para 450MiB. Usuários que atualmente definem `-dbcache` para um valor alto(por exemplo, para manter o UTXO completamente armazenados em cache na memória) devem considerar aumentar esta configuração para alcançar o mesmo desempenho de cache que em versões anteriores. Usuários em sistemas com baixa memória (como sistemas com 1GB ou menos) devem considerar especificar um valor menor para este parâmetro.
+O padrão `-dbcache` também foi alterado nesta versão para 450MiB. Usuários que atualmente definem `-dbcache` para um valor alto (por exemplo, para manter o UTXO completamente armazenados em cache na memória) devem considerar aumentar esta configuração para alcançar o mesmo desempenho de cache que em versões anteriores. Usuários em sistemas com baixa memória (como sistemas com 1GB ou menos) devem considerar especificar um valor menor para este parâmetro.
 
 Informações adicionais sobre a execução em sistemas de baixa memória podem ser encontradas aqui, originalmente escrito para Bitcoin mas também pode ser usado para Criptoreal: [reducing-bitcoind-memory-usage.md](https://gist.github.com/laanwj/efe29c7661ce9b6620a7).
 
