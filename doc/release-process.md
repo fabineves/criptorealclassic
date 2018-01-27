@@ -20,12 +20,12 @@ Antes de qualquer menor ou maior lançamento:
 
 Antes de cada lançamento maior:
 
-* Atualize hardcoded [seeds](/contrib/seeds/README.md), veja [this pull request](https://github.com/bitcoin/bitcoin/pull/7415) para um exemplo.
+* Atualize hardcoded [seeds](/contrib/seeds/README.md), veja [este pull request](https://github.com/bitcoin/bitcoin/pull/7415) para um exemplo.
 * Atualize [`BLOCK_CHAIN_SIZE`](/src/qt/intro.cpp) para o tamanho atual.
 
 ### Primeira vez / Novos compiladores
 
-Se você estiver usando o script automatizado (found in [contrib/gitian-build.sh](/contrib/gitian-build.sh)), então neste ponto, você deve executá-lo com o comando "--setup". Do contrário, ignore isso.
+Se você estiver usando o script automatizado (encontrado em [contrib/gitian-build.sh](/contrib/gitian-build.sh)), então neste ponto, você deve executá-lo com o comando "--setup". Do contrário, ignore isso.
 
 Confira o código fonte na seguinte hierarquia de diretórios.
 
@@ -35,7 +35,7 @@ Confira o código fonte na seguinte hierarquia de diretórios.
     git clone https://github.com/devrandom/gitian-builder.git
     git clone https://github.com/criptoreal/criptoreal.git
 
-### Mantenedores/engenheiros de lançamento do Criptoreal, atualize a versão nos fontes
+### Mantenedores/engenheiros de lançamento do Criptoreal, atualizem a versão nos fontes
 
 Atualizem o seguinte:
 
@@ -55,7 +55,7 @@ Atualizem o seguinte:
 
 Escreva as notas de lançamento. O git shortlog ajuda muito, por exemplo:
 
-    git shortlog --no-merges v(current version, e.g. 0.7.2)..v(new version, e.g. 0.8.0)
+    git shortlog --no-merges v(versão atual, e.g. 0.7.2)..v(nova versão, e.g. 0.8.0)
 
 (ou ping @wumpus no IRC, ele possui ferramentas específicas para gerar as listas de pulls combinadas e classificá-las em categorias com base em etiquetas)
 
@@ -197,7 +197,7 @@ Criar (e verificar opcionalmente) os binários do Windows assinados:
     mv build/out/criptoreal-*win32-setup.exe ../criptoreal-${VERSION}-win32-setup.exe
     popd
 
-Commit your signature for the signed OS X/Windows binaries:
+Confirme sua assinatura para os binários OS X / Windows assinados:
 
     pushd gitian.sigs.cripto
     git add ${VERSION}-osx-signed/${SIGNER}
